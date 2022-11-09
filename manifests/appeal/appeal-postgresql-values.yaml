@@ -1,0 +1,9 @@
+global:
+  postgresql:
+    auth:
+      username: appeal
+      database: appeal
+      existingSecret: appeal-secrets
+      secretKeys:
+        userPasswordKey: psqluserpass
+        adminPasswordKey: psqladminpass
