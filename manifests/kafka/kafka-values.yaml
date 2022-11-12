@@ -1,0 +1,4 @@
+advertisedListeners: 'CLIENT://127.0.0.1:9092,INTERNAL://127.0.0.1:9093'
+listenerSecurityProtocolMap: "INTERNAL:PLAINTEXT,CLIENT:PLAINTEXT"
+listeners: "CLIENT://:9092,INTERNAL://:9093"
+interBrokerListenerName: INTERNAL
