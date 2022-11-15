@@ -12,10 +12,6 @@ data class OutboxEvent(
          */
         var messageKey: String?,
         /**
-         * Уникальный идентификатор события
-         */
-        var eventId: UUID,
-        /**
          * Представление события в формате json
          */
         var eventBodyJson: String,
