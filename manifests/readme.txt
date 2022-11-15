@@ -9,6 +9,12 @@ a) Сервис appeal
 Подключение к БД:
 kubectl --namespace appeal port-forward svc/appeal-database-postgresql 5434:5432
 
+б) Сервис doctor
+(1) kubectl apply -f doctor-namespace.yaml
+(2) kubectl apply -f doctor-secret.yaml
+(3) helm -n doctor install doctor-database -f doctor-postgresql-values.yaml bitnami/postgresql
+Подключение к БД:
+kubectl --namespace doctor port-forward svc/doctor-database-postgresql 5435:5432
 
 Установка kafka:
 (1) Откуда брать чарт
