@@ -1,0 +1,9 @@
+global:
+  postgresql:
+    auth:
+      username: doctor
+      database: doctor
+      existingSecret: doctor-secrets
+      secretKeys:
+        userPasswordKey: psqluserpass
+        adminPasswordKey: psqladminpass
