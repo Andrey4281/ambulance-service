@@ -4,13 +4,21 @@ import io.swagger.v3.oas.annotations.OpenAPIDefinition
 import io.swagger.v3.oas.annotations.info.Info
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
-
-import org.springframework.data.r2dbc.repository.config.EnableR2dbcRepositories
+import org.springframework.scheduling.annotation.EnableScheduling
+import org.springframework.transaction.annotation.EnableTransactionManagement
 import org.springframework.web.reactive.config.EnableWebFlux
 
 
+@SpringBootApplication(scanBasePackages = arrayOf(
+        "ru.ambulance.config.broker",
+        "ru.ambulance.config.dao",
+        "ru.ambulance.config.scheduler",
+        "ru.ambulance.broker.retry",
+        "ru.ambulance.broker.service",
+        "ru.ambulance.appeal"))
 @EnableWebFlux
-@SpringBootApplication
+@EnableTransactionManagement
+@EnableScheduling
 @OpenAPIDefinition(info = Info(title = "Swagger Appeal Service", version = "1.0", description = "Documentation APIs v1.0"))
 class AppealServiceStarter
 

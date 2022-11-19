@@ -1,4 +1,4 @@
-package ru.ambulance.broker.outbox
+package ru.ambulance.broker.events.outbox
 
 import java.util.*
 
@@ -7,6 +7,8 @@ import java.util.*
  * Паттерн outbox
  */
 data class OutboxEvent(
+
+        var eventId: UUID,
         /**
          * Ключ сообщения
          */
