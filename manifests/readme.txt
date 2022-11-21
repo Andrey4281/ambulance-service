@@ -16,6 +16,15 @@ kubectl --namespace appeal port-forward svc/appeal-database-postgresql 5434:5432
 Подключение к БД:
 kubectl --namespace doctor port-forward svc/doctor-database-postgresql 5435:5432
 
+в) Сервис nurse
+В папке manifests/nurse выполнить следующие команды:
+(1) kubectl apply -f nurse-namespace.yaml
+(2) kubectl apply -f nurse-secret.yaml
+(3) helm -n doctor install nurse-database -f nurse-postgresql-values.yaml bitnami/postgresql
+Подключение к БД:
+kubectl --namespace nurse port-forward svc/doctor-database-postgresql 5435:5432
+
+
 Установка kafka:
 (1) Откуда брать чарт
 https://bitnami.com/stack/kafka/helm
