@@ -1,0 +1,3 @@
+databaseChangeLog:
+  - include:
+      file: db/scripts/2022-11-23_create_hospital_table.yaml
