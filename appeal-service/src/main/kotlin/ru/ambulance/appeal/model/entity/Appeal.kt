@@ -1,4 +1,4 @@
-package ru.ambulance.appeal.model
+package ru.ambulance.appeal.model.entity
 
 import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Table
@@ -6,7 +6,7 @@ import ru.ambulance.enums.AppealStatus
 import ru.ambulance.enums.DoctorSpecialization
 import ru.ambulance.enums.PatientState
 
-@Table("APPEALS")
+@Table("appeal")
 data class Appeal(@Id val id: String, //  UUID identifier appeal
                   val authorId: String, //  UUID reference to userId
                   val description: String,

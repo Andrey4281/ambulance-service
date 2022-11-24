@@ -20,7 +20,7 @@ kubectl --namespace doctor port-forward svc/doctor-database-postgresql 5435:5432
 (1) Откуда брать чарт
 https://bitnami.com/stack/kafka/helm
 Выполнить команду для установки:
-(2) helm -n kafka install kafka-cluster bitnami/kafka
+(2) helm -n kafka install kafka-cluster -f kafka-values.yaml bitnami/kafka
 
 Подключение к брокеру kafka из внешнего хоста:
 (1) Перед подключением необходимо выполнить команду
