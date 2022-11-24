@@ -1,4 +1,4 @@
-package ru.ambulance.appeal.model
+package ru.ambulance.appeal.model.entity
 
 import org.springframework.data.annotation.Id
 import org.springframework.data.relational.core.mapping.Table

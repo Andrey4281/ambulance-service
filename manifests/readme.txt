@@ -10,17 +10,26 @@ a) Сервис appeal
 kubectl --namespace appeal port-forward svc/appeal-database-postgresql 5434:5432
 
 б) Сервис doctor
+В папке manifests/doctor выполнить следующие команды:
 (1) kubectl apply -f doctor-namespace.yaml
 (2) kubectl apply -f doctor-secret.yaml
 (3) helm -n doctor install doctor-database -f doctor-postgresql-values.yaml bitnami/postgresql
 Подключение к БД:
 kubectl --namespace doctor port-forward svc/doctor-database-postgresql 5435:5432
 
+в) Сервис nurse
+В папке manifests/nurse выполнить следующие команды:
+(1) kubectl apply -f nurse-namespace.yaml
+(2) kubectl apply -f nurse-secret.yaml
+(3) helm -n nurse install nurse-database -f nurse-postgresql-values.yaml bitnami/postgresql
+Подключение к БД:
+kubectl --namespace nurse port-forward svc/nurse-database-postgresql 5436:5432
+
 Установка kafka:
 (1) Откуда брать чарт
 https://bitnami.com/stack/kafka/helm
 Выполнить команду для установки:
-(2) helm -n kafka install kafka-cluster bitnami/kafka
+(2) helm -n kafka install kafka-cluster -f kafka-values.yaml bitnami/kafka
 
 Подключение к брокеру kafka из внешнего хоста:
 (1) Перед подключением необходимо выполнить команду
@@ -49,3 +58,6 @@ https://faun.pub/kafka-and-kowl-on-kubernetes-f9268c516870
 helm -n kafka upgrade kafka-cluster -f kafka-values.yaml bitnami/kafka
 
 helm upgrade -f cowl-values.yaml kowl cloudhut/kowl -n kafka
+
+
+kubectl --namespace kafka port-forward pods/kafka-cluster-0 9092:9092

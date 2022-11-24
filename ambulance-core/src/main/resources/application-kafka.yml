@@ -1,0 +1,23 @@
+spring:
+  kafka:
+    producer:
+      bootstrap-servers: localhost:9093
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.apache.kafka.common.serialization.StringSerializer
+    consumer:
+      auto-offset-reset: earliest
+#      auto-offset-reset: latest
+      bootstrap-servers: localhost:9093
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+
+kafka:
+  retry:
+    count: 3
+    retryTopic: retryTopic
+    deadLetterTopic: deadLetterTopic
+
+outbox:
+  fixed-delay-sending-in-milliseconds: 5000
+  lock-at-least-for-string-in-milliseconds: 5000ms
+  lock-at-most-for-string-in-milliseconds: 30000ms
