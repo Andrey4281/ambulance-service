@@ -10,5 +10,5 @@ data class UpdateInvestigationAssignmentEvent(
         var isExecuted: Boolean = false,
         var isReady: Boolean = false,
         var updatedFields: List<InvestigationAssignmentFields> = Collections.emptyList(),
-        override var eventId: UUID
+        override var eventId: String
 ): BaseEvent(eventId)

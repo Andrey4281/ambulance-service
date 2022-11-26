@@ -9,11 +9,12 @@ import org.springframework.transaction.reactive.TransactionalOperator
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import reactor.kafka.sender.SenderRecord
-import ru.ambulance.broker.events.base.BaseEvent
 import ru.ambulance.broker.events.outbox.OutboxEvent
-import java.util.*
+import ru.ambulance.function.logger
 
-abstract class OutboxProcessor<T : BaseEvent> {
+abstract class OutboxProcessor {
+
+    private val log = logger()
 
     @Autowired
     private lateinit var reactiveKafkaProducerTemplate: ReactiveKafkaProducerTemplate<String, String>
@@ -26,14 +27,14 @@ abstract class OutboxProcessor<T : BaseEvent> {
             lockAtLeastForString = "\${outbox.lock-at-least-for-string-in-seconds:5000ms}",
             lockAtMostForString = "\${outbox.lock-at-most-for-string-in-seconds:30000ms}")
     fun sendMessages() {
-        getMessage().flatMap {
+        getMessage().log().flatMap {
             val producerRecord: ProducerRecord<String, String> = ProducerRecord(it.sendToTopic, it.messageKey, it.eventBodyJson)
-            val senderRecord: SenderRecord<String, String, UUID> = SenderRecord.create(producerRecord, it.eventId)
-            reactiveKafkaProducerTemplate.send(senderRecord)
+            val senderRecord: SenderRecord<String, String, String> = SenderRecord.create(producerRecord, it.eventId)
+            reactiveKafkaProducerTemplate.send(senderRecord).doOnSuccess{ log.info("topic=${it.recordMetadata().topic()} partition=${it.recordMetadata().partition()}")}
         }.flatMap { deleteById(it.correlationMetadata()) }.`as`(operator::transactional).subscribe()
     }
 
     abstract fun getMessage(): Flux<OutboxEvent>
 
-    abstract fun deleteById(id: UUID): Mono<Void>
+    abstract fun deleteById(id: String): Mono<Void>
 }

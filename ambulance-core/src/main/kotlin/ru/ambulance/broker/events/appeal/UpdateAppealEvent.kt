@@ -9,5 +9,5 @@ data class UpdateAppealEvent(
         var appealId: Long,
         var appealStatus: AppealStatus,
         var updatedFields: List<AppealFields> = Collections.emptyList(),
-        override var eventId: UUID
+        override var eventId: String
 ): BaseEvent(eventId)

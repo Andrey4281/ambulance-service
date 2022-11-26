@@ -1,7 +1,7 @@
 databaseChangeLog:
 
   - changeSet:
-      id: 2
+      id: 3
       author: asemenov
       changes:
         - createTable:
@@ -41,3 +41,9 @@ databaseChangeLog:
               - column:
                   name: user_id
                   type: varchar(256)
+              - column:
+                  name: gender
+                  type: varchar(30)
+              - column:
+                  name: birth_date
+                  type: date

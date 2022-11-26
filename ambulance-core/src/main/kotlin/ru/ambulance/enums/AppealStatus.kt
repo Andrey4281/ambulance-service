@@ -39,5 +39,9 @@ enum class AppealStatus {
     /**
      * Пациент отказался от госпитализации
      */
-    REJECTED_FROM_GOSPITALIZATION
+    REJECTED_FROM_GOSPITALIZATION,
+    /**
+     * Обращение упало с ошибкой
+     */
+    ERROR
 }
