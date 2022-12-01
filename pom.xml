@@ -11,11 +11,13 @@
     <modules>
         <module>ambulance-core</module>
         <module>appeal-service</module>
+        <module>gateway</module>
     </modules>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
         <maven.compiler.target>17</maven.compiler.target>
+        <cloud.version>2021.0.4</cloud.version>
     </properties>
 
     <parent>
@@ -63,7 +65,13 @@
     </pluginRepositories>
 
     <dependencyManagement>
-
+        <dependencies>
+            <dependency>
+                <groupId>org.springframework.cloud</groupId>
+                <artifactId>spring-cloud-dependencies</artifactId>
+                <version>${cloud.version}</version>
+            </dependency>
+        </dependencies>
     </dependencyManagement>
 
 </project>
