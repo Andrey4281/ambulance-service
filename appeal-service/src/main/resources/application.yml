@@ -1,13 +1,19 @@
 server:
   port: 8081
 
+
 spring:
+  kafka:
+    consumer:
+      group-id: appeal-group
   profiles:
-    include: jdbc, swagger
+    include: jdbc, swagger, kafka
     # disable CONDITIONS EVALUATION REPORT
   devtools:
     restart:
       log-condition-evaluation-delta: false
+  application:
+    name: appeal-service
 
 # actuator settings
 management:

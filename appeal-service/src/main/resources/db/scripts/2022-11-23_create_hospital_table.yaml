@@ -1,0 +1,26 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 1
+      author: asemenov
+      changes:
+        - createTable:
+            schema: public
+            tableName: hospital
+            columns:
+              - column:
+                  name: id
+                  type: varchar(100)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(256)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: adress
+                  type: varchar(256)
+                  constraints:
+                    nullable: false

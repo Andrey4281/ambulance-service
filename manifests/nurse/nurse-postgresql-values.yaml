@@ -1,0 +1,9 @@
+global:
+  postgresql:
+    auth:
+      username: nurse
+      database: nurse
+      existingSecret: nurse-secrets
+      secretKeys:
+        userPasswordKey: psqluserpass
+        adminPasswordKey: psqladminpass
