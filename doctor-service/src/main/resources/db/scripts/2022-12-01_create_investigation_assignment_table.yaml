@@ -1,0 +1,36 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 1
+      author: ymuradov
+      changes:
+        - createTable:
+            schema: public
+            tableName: investigation_assignment
+            columns:
+              - column:
+                  name: id
+                  type: varchar(100)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: examination_id
+                  type: varchar(150)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: investigation_kind_id
+                  type: smallint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_executed
+                  type: boolean
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_ready
+                  type: boolean
+                  constraints:
+                    nullable: false

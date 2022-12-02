@@ -11,6 +11,7 @@
     <modules>
         <module>ambulance-core</module>
         <module>appeal-service</module>
+        <module>doctor-service</module>
     </modules>
 
     <properties>

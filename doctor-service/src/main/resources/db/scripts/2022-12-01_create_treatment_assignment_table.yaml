@@ -2,11 +2,11 @@ databaseChangeLog:
 
   - changeSet:
       id: 1
-      author: asemenov
+      author: ymuradov
       changes:
         - createTable:
             schema: public
-            tableName: hospital
+            tableName: treatment_assignment
             columns:
               - column:
                   name: id
@@ -15,12 +15,17 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: name
-                  type: varchar(256)
+                  name: examination_id
+                  type: varchar(150)
                   constraints:
                     nullable: false
               - column:
-                  name: address
-                  type: varchar(256)
+                  name: treatment_kind_id
+                  type: smallint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_executed
+                  type: boolean
                   constraints:
                     nullable: false

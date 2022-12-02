@@ -1,0 +1,17 @@
+spring:
+  r2dbc:
+    url: r2dbc:postgresql://${R2DS_DOCTOR_DB_HOSTNAME:localhost}:${R2DS_DOCTOR_DB_PORT:5435}/${R2DS_DOCTOR_DB_NAME:doctor}
+    username: ${R2DS_DOCTOR_DB_USERNAME:doctor}
+    password: ${R2DS_DOCTOR_DB_PASSWORD:doctor}
+    initialization-mode: always
+    pool:
+      name: DOCTOR-SERVICE-POOL
+      maxSize: 10
+      initialSize: 2
+      maxIdleTime: 30m
+      validationQuery: "SELECT 1"
+  liquibase:
+    url: jdbc:postgresql://${R2DS_DOCTOR_DB_HOSTNAME:localhost}:${R2DS_DOCTOR_DB_PORT:5434}/${R2DS_DOCTOR_DB_NAME:doctor}
+    user: ${R2DS_DOCTOR_DB_USERNAME:doctor}
+    password: ${R2DS_DOCTOR_DB_PASSWORD:doctor}
+    change-log: classpath:/db/db.changelog.yaml

@@ -1,0 +1,36 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 1
+      author: ymuradov
+      changes:
+        - createTable:
+            schema: public
+            tableName: doctor_shift
+            columns:
+              - column:
+                  name: doctor_id
+                  type: varchar(100)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: is_active
+                  type: boolean
+                  constraints:
+                    nullable: false
+              - column:
+                  name: date
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: active_appeal_count
+                  type: smallint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: total_appeal_count
+                  type: smallint
+                  constraints:
+                    nullable: false
