@@ -13,7 +13,7 @@ spring:
     restart:
       log-condition-evaluation-delta: false
   application:
-    name: appeal-service
+    name: doctor-service
 
 # actuator settings
 management:
