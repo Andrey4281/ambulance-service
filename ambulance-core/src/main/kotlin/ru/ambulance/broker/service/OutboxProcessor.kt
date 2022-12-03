@@ -23,6 +23,7 @@ abstract class OutboxProcessor {
     private lateinit var  transactionalOperator: TransactionalOperator
 
     @Scheduled(fixedDelayString = "\${outbox.fixed-delay-sending-in-milliseconds:5000}")
+    //TODO asemennov не рабоет если раскоментить
 //    @SchedulerLock(name = "OutboxProcessor_sendingTask",
 //            lockAtLeastFor = "\${outbox.lock-at-least-for-string-in-seconds:5000ms}",
 //            lockAtMostFor = "\${outbox.lock-at-most-for-string-in-seconds:30000ms}")
