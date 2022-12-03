@@ -1,0 +1,36 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 1
+      author: ymuradov
+      changes:
+        - createTable:
+            schema: public
+            tableName: examination
+            columns:
+              - column:
+                  name: id
+                  type: varchar(100)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: preliminary_diagnosis
+                  type: varchar(150)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: examination_time
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: appeal_id
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: doctor_id
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
