@@ -21,16 +21,18 @@ databaseChangeLog:
                     nullable: false
               - column:
                   name: investigation_kind_id
-                  type: smallint
+                  type: varchar(100)
                   constraints:
                     nullable: false
               - column:
                   name: is_executed
                   type: boolean
+                  defaultValue: false
                   constraints:
                     nullable: false
               - column:
                   name: is_ready
                   type: boolean
+                  defaultValue: false
                   constraints:
                     nullable: false

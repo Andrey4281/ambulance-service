@@ -27,8 +27,6 @@ databaseChangeLog:
               - column:
                   name: patronymic_name
                   type: varchar(50)
-                  constraints:
-                    nullable: false
               - column:
                   name: specialization
                   type: varchar(100)

@@ -4,22 +4,13 @@ databaseChangeLog:
       id: 1
       author: ymuradov
       changes:
-        - addAutoIncrement:
-            columnDataType: smallint
-            columnName: id
-            defaultOnNull: false
-            generationType: ALWAYS
-            incrementBy: 1
-            schema: public
-            startWith: 1
-            tableName: investigation_kind
         - createTable:
             schema: public
             tableName: investigation_kind
             columns:
               - column:
                   name: id
-                  type: smallint
+                  type: varchar(100)
                   constraints:
                     primaryKey: true
                     nullable: false

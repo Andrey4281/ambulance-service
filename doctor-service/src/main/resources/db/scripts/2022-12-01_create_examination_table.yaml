@@ -20,8 +20,18 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
+                  name: current_patient_state
+                  type: varchar(256)
+                  constraints:
+                    nullable: false
+              - column:
                   name: examination_time
                   type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: tzone
+                  type: varchar(40)
                   constraints:
                     nullable: false
               - column:
