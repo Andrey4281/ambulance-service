@@ -9,5 +9,5 @@ data class UpdateTreatmentAssignmentEvent(
         var treatmentKindId: Long,
         var isExecuted: Boolean = false,
         var updatedFields: List<TreatmentAssignmentFields> = Collections.emptyList(),
-        override var eventId: UUID
+        override var eventId: String
 ): BaseEvent(eventId)

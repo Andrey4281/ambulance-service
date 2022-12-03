@@ -1,26 +1,29 @@
 databaseChangeLog:
 
   - changeSet:
-      id: 1
+      id: 5
       author: asemenov
       changes:
         - createTable:
             schema: public
-            tableName: hospital
+            tableName: outbox_event
             columns:
               - column:
-                  name: id
+                  name: event_id
                   type: varchar(100)
                   constraints:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: name
+                  name: message_key
                   type: varchar(256)
+              - column:
+                  name: event_body_json
+                  type: varchar(512)
                   constraints:
                     nullable: false
               - column:
-                  name: address
-                  type: varchar(256)
+                  name: send_to_topic
+                  type: varchar(100)
                   constraints:
                     nullable: false

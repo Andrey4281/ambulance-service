@@ -10,7 +10,7 @@ data class DoctorResponseOnCreatingAppealEvent(
         /**
          * Идентификатор доктора
          */
-        var doctorId: Long?,
+        var doctorId: String?,
         override var isSuccess: Boolean,
-        override var eventId: UUID
+        override var eventId: String
 ) : SagaResponse(isSuccess, eventId)

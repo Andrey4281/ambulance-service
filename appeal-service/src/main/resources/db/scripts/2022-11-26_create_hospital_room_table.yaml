@@ -1,12 +1,12 @@
 databaseChangeLog:
 
   - changeSet:
-      id: 1
+      id: 6
       author: asemenov
       changes:
         - createTable:
             schema: public
-            tableName: hospital
+            tableName: hospital_room
             columns:
               - column:
                   name: id
@@ -15,12 +15,15 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: name
-                  type: varchar(256)
-                  constraints:
-                    nullable: false
+                  name: type
+                  type: varchar(100)
               - column:
-                  name: address
-                  type: varchar(256)
+                  name: hospital_id
+                  type: varchar(100)
                   constraints:
                     nullable: false
+                    foreignKeyName: fk_hospital_room_hospital_id
+                    references: hospital(id)
+              - column:
+                  name: cabinet_number
+                  type: integer

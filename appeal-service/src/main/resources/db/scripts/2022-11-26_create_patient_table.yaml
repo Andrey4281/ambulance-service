@@ -1,0 +1,49 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 3
+      author: asemenov
+      changes:
+        - createTable:
+            schema: public
+            tableName: patient
+            columns:
+              - column:
+                  name: id
+                  type: varchar(100)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: first_name
+                  type: varchar(256)
+              - column:
+                  name: last_name
+                  type: varchar(256)
+              - column:
+                  name: patronymic
+                  type: varchar(256)
+              - column:
+                  name: phone
+                  type: varchar(256)
+              - column:
+                  name: email
+                  type: varchar(256)
+              - column:
+                  name: address
+                  type: varchar(256)
+              - column:
+                  name: doc_type_id
+                  type: varchar(256)
+                  constraints:
+                    foreignKeyName: fk_patient_doc_type_id
+                    references: document(id)
+              - column:
+                  name: user_id
+                  type: varchar(256)
+              - column:
+                  name: gender
+                  type: varchar(30)
+              - column:
+                  name: birth_date
+                  type: date

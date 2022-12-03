@@ -1,0 +1,60 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 4
+      author: asemenov
+      changes:
+        - createTable:
+            schema: public
+            tableName: appeal
+            columns:
+              - column:
+                  name: id
+                  type: varchar(100)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: author_id
+                  type: varchar(256)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: description
+                  type: varchar(256)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: primary_patient_status
+                  type: varchar(256)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: patient_id
+                  type: varchar(256)
+                  constraints:
+                    foreignKeyName: fk_appeal_patient_id
+                    references: patient(id)
+              - column:
+                  name: current_doctor_id
+                  type: varchar(256)
+              - column:
+                  name: primary_required_doctor
+                  type: varchar(256)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: hospital_id
+                  type: varchar(256)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_hospital_hospital_id
+                    references: hospital(id)
+              - column:
+                  name: appeal_status
+                  type: varchar(256)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: current_cabinet_number
+                  type: integer

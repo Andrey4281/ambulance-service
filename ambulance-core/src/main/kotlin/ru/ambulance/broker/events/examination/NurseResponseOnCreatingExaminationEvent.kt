@@ -6,5 +6,5 @@ import java.util.*
 /**
  * Ответ на событие CreatingExaminationEvent со стороны NurseService(сага createExamination)
  */
-data class NurseResponseOnCreatingExaminationEvent(override var isSuccess: Boolean, override var eventId: UUID)
+data class NurseResponseOnCreatingExaminationEvent(override var isSuccess: Boolean, override var eventId: String)
     : SagaResponse(isSuccess, eventId)

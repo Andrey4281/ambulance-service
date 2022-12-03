@@ -24,7 +24,7 @@ import ru.ambulance.function.logger
  * Общий конфигурационный класс для Kafka Consumer
  */
 @Configuration
-abstract class ReactiveKafkaConsumer<T : BaseEvent> {
+abstract class ReactiveKafkaConsumer<T : BaseEvent, D> {
 
     @Autowired
     private lateinit var reactiveKafkaProducerTemplate: ReactiveKafkaProducerTemplate<String, String>
@@ -70,8 +70,9 @@ abstract class ReactiveKafkaConsumer<T : BaseEvent> {
 
     abstract fun getTopic(): String
 
-    abstract fun getSuccessHandler(value: T): Mono<T>
+    abstract fun getSuccessHandler(value: T): Mono<D>
 
+    //TODO asemenov сделать слушатель на dead letter топик который будет откатывать саги
     private fun getErrorHandler(consumerRecord: ConsumerRecord<String, String>, e: Throwable): Mono<SenderResult<Void>> {
         val consumerRecordHeaders: Map<String, Any> = HashMap()
         defaultKafkaHeaderMapper.toHeaders(consumerRecord.headers(), consumerRecordHeaders)

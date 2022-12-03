@@ -1,26 +1,31 @@
 databaseChangeLog:
 
   - changeSet:
-      id: 1
+      id: 7
       author: asemenov
       changes:
         - createTable:
             schema: public
-            tableName: hospital
+            tableName: shedlock
             columns:
               - column:
-                  name: id
-                  type: varchar(100)
+                  name: name
+                  type: varchar(64)
                   constraints:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: name
-                  type: varchar(256)
+                  name: lock_until
+                  type: timestamp
                   constraints:
                     nullable: false
               - column:
-                  name: address
-                  type: varchar(256)
+                  name: locked_at
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: locked_by
+                  type: varchar(255)
                   constraints:
                     nullable: false

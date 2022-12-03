@@ -1,12 +1,12 @@
 databaseChangeLog:
 
   - changeSet:
-      id: 1
+      id: 2
       author: asemenov
       changes:
         - createTable:
             schema: public
-            tableName: hospital
+            tableName: document
             columns:
               - column:
                   name: id
@@ -15,12 +15,27 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: name
+                  name: series
                   type: varchar(256)
                   constraints:
                     nullable: false
               - column:
-                  name: address
+                  name: number
                   type: varchar(256)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: issued_by
+                  type: varchar(256)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: issued_date
+                  type: date
+                  constraints:
+                    nullable: false
+              - column:
+                  name: expiration_date
+                  type: date
                   constraints:
                     nullable: false
