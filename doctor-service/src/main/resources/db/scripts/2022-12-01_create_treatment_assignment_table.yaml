@@ -19,6 +19,8 @@ databaseChangeLog:
                   type: varchar(150)
                   constraints:
                     nullable: false
+                    foreignKeyName: fk_treatment_assignment_examination_id
+                    references: examination(id)
               - column:
                   name: treatment_kind_id
                   type: varchar(100)

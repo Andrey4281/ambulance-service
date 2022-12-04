@@ -43,4 +43,6 @@ databaseChangeLog:
                   name: doctor_id
                   type: varchar(100)
                   constraints:
+                    foreignKeyName: fk_examination_doctor_id
+                    references: doctor(id)
                     nullable: false
