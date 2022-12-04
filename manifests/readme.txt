@@ -46,11 +46,11 @@ kubectl --namespace kafka port-forward svc/kowl 8080:80
 
 #Установка keycloak:
 (1) kubectl apply -f keycloak-namespace.yaml
-(2) kubectl create -n keycloak-namespace -f https://raw.githubusercontent.com/keycloak/keycloak-quickstarts/latest/kubernetes-examples/keycloak.yaml
+(2) kubectl apply -f keycloak-postgres.yaml
+(3) kubectl apply -f keycloak-service.yaml
 
 Для дебага:
-(1) minikube tunnel
-(2) go to url http://$(minikube ip):$(kubectl get services/keycloak -o go-template='{{(index .spec.ports 0).nodePort}}')
+(1) go to url http://$(minikube ip):$(kubectl get services/keycloak -o go-template='{{(index .spec.ports 0).nodePort}}')
 
 Для отката:
 (1) kubectl delete namespace keycloak
