@@ -12,5 +12,6 @@ data class CreatingAppealEvent(
          */
         var primaryRequiredDoctor: DoctorSpecialization,
         var hospitalId: String,
+        var appealId: String,
         override var eventId: String
 ): BaseEvent(eventId)

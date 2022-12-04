@@ -33,7 +33,8 @@ class AppealServiceImpl(private val appealRepository: AppealRepository,
 
     @Transactional
     override fun createNewAppeal(createAppealRdto: CreateAppealRdto): Mono<String> {
-        val appeal = Appeal(appealId = UUID.randomUUID().toString(), authorId = createAppealRdto.authorId,
+        val appealId: String = UUID.randomUUID().toString()
+        val appeal = Appeal(appealId = appealId, authorId = createAppealRdto.authorId,
                 description = createAppealRdto.description, primaryPatientStatus = createAppealRdto.primaryPatientStatus.name,
                 patientId = createAppealRdto.patientId, primaryRequiredDoctor = createAppealRdto.primaryRequiredDoctor.name,
                 hospitalId = createAppealRdto.hospitalId)
@@ -66,7 +67,7 @@ class AppealServiceImpl(private val appealRepository: AppealRepository,
             appeal.currentCabinetNumber = it
             appealRepository.save(appeal)
         }.map { it.toCreatingAppealEvent() }.flatMap { appealMessageService.sendMessage(null, appealRequestTopic, it) }
-                .map { it.eventId }
+                .map { appealId }
     }
 
     override fun save(appeal: Appeal): Mono<Appeal> = appealRepository.save(appeal)

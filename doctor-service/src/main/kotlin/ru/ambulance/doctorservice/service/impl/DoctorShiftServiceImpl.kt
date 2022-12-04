@@ -14,17 +14,25 @@ import java.util.*
 class DoctorShiftServiceImpl(private val doctorShiftRepository: DoctorShiftRepository): DoctorShiftService {
 
     //TODO asemenov webflux обработку исключения
+    //TODO asemenov могут быть проблемы если две параллельные транзакции
     override fun beginShift(doctorId: String, tZone: String): Mono<String> {
         return doctorShiftRepository.isExistActiveDoctorShift(doctorId).flatMap {
             if (it) {
                 Mono.error(ActiveShiftAlreadyExistsException("Active shift already exists for this doctor"))
             } else {
                 val shift = DoctorShift(doctorShiftId = UUID.randomUUID().toString(),
-                doctorId = doctorId, date = OffsetDateTime.now(ZoneId.of("UTC")), tZone = tZone)
+                doctorId = doctorId, date = OffsetDateTime.now(ZoneId.of("UTC")).toLocalDateTime(), tZone = tZone)
                 doctorShiftRepository.save(shift)
             }
         }.map { it.doctorShiftId }
     }
 
     override fun endShift(doctorId: String): Mono<Void> = doctorShiftRepository.endShift(doctorId)
+
+    override fun findActiveShiftByDoctorId(doctorId: String): Mono<DoctorShift> = doctorShiftRepository.findFirstByDoctorIdAndIsActiveTrue(doctorId)
+
+    override fun updateShift(doctorShift: DoctorShift): Mono<DoctorShift> {
+        doctorShift.isNewObject = false
+        return doctorShiftRepository.save(doctorShift)
+    }
 }

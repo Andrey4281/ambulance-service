@@ -1,7 +1,9 @@
 package ru.ambulance.appeal.broker.saga
 
 import org.springframework.beans.factory.annotation.Autowired
+import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Configuration
+import org.springframework.transaction.annotation.Transactional
 import reactor.core.publisher.Mono
 import ru.ambulance.appeal.model.entity.Appeal
 import ru.ambulance.appeal.service.AppealService
@@ -12,13 +14,17 @@ import ru.ambulance.enums.AppealStatus
 @Configuration
 class CreatingAppealSagaDoctorResponseListener: ReactiveKafkaConsumer<DoctorResponseOnCreatingAppealEvent, Appeal>() {
 
+    @Value("\${kafka.topics.appealResponseTopic}")
+    private val appealResponseTopic: String = "appealResponseTopic"
+
     @Autowired
     private lateinit var appealService: AppealService;
 
-    override fun getTopic(): String = "DoctorResponseOnCreatingAppealEvent"
+    override fun getTopic(): String = appealResponseTopic
 
+    @Transactional
     override fun getSuccessHandler(responseEvent: DoctorResponseOnCreatingAppealEvent): Mono<Appeal> {
-        return responseEvent.eventId.let { appealService.findById(it) }.flatMap {
+        return responseEvent.appealId.let { appealService.findById(it) }.flatMap {
             it.isNewObject = false
             if (responseEvent.isSuccess) {
                 it.appealStatus = AppealStatus.ASSIGNED.name

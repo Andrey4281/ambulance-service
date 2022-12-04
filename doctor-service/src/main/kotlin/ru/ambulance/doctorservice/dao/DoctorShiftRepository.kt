@@ -17,4 +17,6 @@ interface DoctorShiftRepository : ReactiveCrudRepository<DoctorShift, String> {
 
     @Query("SELECT EXISTS (SELECT 1 FROM doctor_shift WHERE is_active=true AND doctor_id = :doctorId)")
     fun isExistActiveDoctorShift(@Param("doctorId") doctorId: String): Mono<Boolean>
+
+    fun findFirstByDoctorIdAndIsActiveTrue(doctorId: String): Mono<DoctorShift>
 }
