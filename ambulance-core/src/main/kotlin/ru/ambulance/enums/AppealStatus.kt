@@ -41,7 +41,11 @@ enum class AppealStatus {
      */
     REJECTED_FROM_GOSPITALIZATION,
     /**
-     * Обращение упало с ошибкой
+     * Обращение упало с системной ошибкой
      */
-    ERROR
+    ERROR,
+    /**
+     * Обращение упало с ошибкой по причине недоступности врачей
+     */
+    UNAVAILABLE_DOCTOR
 }

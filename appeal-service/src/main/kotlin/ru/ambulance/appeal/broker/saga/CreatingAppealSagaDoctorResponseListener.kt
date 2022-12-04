@@ -24,7 +24,7 @@ class CreatingAppealSagaDoctorResponseListener: ReactiveKafkaConsumer<DoctorResp
                 it.appealStatus = AppealStatus.ASSIGNED.name
                 it.currentDoctorId = responseEvent.doctorId
             } else {
-                it.appealStatus = AppealStatus.ERROR.name
+                it.appealStatus = responseEvent.appealStatus.name
             }
             appealService.save(it)
         }

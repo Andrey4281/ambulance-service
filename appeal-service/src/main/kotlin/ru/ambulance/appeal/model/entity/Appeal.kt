@@ -16,7 +16,6 @@ data class Appeal(@Id @Column("id") val appealId: String, //  UUID identifier ap
                   var currentDoctorId: String? = null, //  UUID identifier of doctor
                   val primaryRequiredDoctor: String, //DoctorSpecialization enum
                   val hospitalId: String, //  UUID identifier of hospital
-
                   // optional and rewritable fields
                   var appealStatus: String = AppealStatus.NEW.name, //AppealStatus enum
                   var currentCabinetNumber: Int? = null,  // номер текущего кабинета доктора, куда пройти клиенту на осмотр
@@ -47,7 +46,7 @@ data class Appeal(@Id @Column("id") val appealId: String, //  UUID identifier ap
             currentCabinetNumber = currentCabinetNumber,
             isNewObject = true)
 
-    override fun isNew(): Boolean = isNewObject || appealId == null
+    override fun isNew(): Boolean = isNewObject
 
-    override fun getId(): String? = appealId
+    override fun getId(): String = appealId
 }
