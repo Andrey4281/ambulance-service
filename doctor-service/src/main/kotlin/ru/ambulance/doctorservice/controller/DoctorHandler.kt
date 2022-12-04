@@ -14,6 +14,7 @@ class DoctorHandler(val doctorShiftService: DoctorShiftService) {
 
     fun beginShift(request: ServerRequest) : Mono<ServerResponse> {
         val doctorId = request.pathVariable("doctorId")
+        //TODO asemenov tZone плюс перезатирается в queryParam
         return ok().contentType(MediaType.APPLICATION_JSON).body(doctorShiftService.beginShift(doctorId = doctorId,
                 tZone = request.queryParams().getFirst("tZone")
                 ?: "UTC+3"),
