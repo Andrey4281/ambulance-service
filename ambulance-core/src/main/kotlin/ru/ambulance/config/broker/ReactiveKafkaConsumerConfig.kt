@@ -1,4 +1,4 @@
-package ru.ambulance.config
+package ru.ambulance.config.broker
 
 import com.fasterxml.jackson.databind.ObjectMapper
 import org.apache.kafka.clients.consumer.ConsumerRecord

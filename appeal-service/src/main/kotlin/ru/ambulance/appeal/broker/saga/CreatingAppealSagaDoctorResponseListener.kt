@@ -6,7 +6,7 @@ import reactor.core.publisher.Mono
 import ru.ambulance.appeal.model.entity.Appeal
 import ru.ambulance.appeal.service.AppealService
 import ru.ambulance.broker.events.appeal.DoctorResponseOnCreatingAppealEvent
-import ru.ambulance.config.ReactiveKafkaConsumer
+import ru.ambulance.config.broker.ReactiveKafkaConsumer
 import ru.ambulance.enums.AppealStatus
 
 @Configuration

@@ -5,23 +5,14 @@ import org.springdoc.kotlin.docRouter
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.http.MediaType
-import org.springframework.web.reactive.config.ResourceHandlerRegistry
-import org.springframework.web.reactive.config.WebFluxConfigurer
 import org.springframework.web.reactive.function.server.RouterFunction
 import org.springframework.web.reactive.function.server.ServerResponse
 import ru.ambulance.appeal.controller.AppealHandler
 import ru.ambulance.appeal.service.AppealService
+import ru.ambulance.config.web.WebConfig
 
 @Configuration
-class WebConfig: WebFluxConfigurer {
-
-    override fun addResourceHandlers(registry: ResourceHandlerRegistry) {
-        registry.addResourceHandler("/swagger-ui.html**")
-            .addResourceLocations("classpath:/META-INF/resources/")
-
-        registry.addResourceHandler("/webjars/**")
-            .addResourceLocations("classpath:/META-INF/resources/webjars/")
-    }
+class AppealWebConfig: WebConfig() {
 
     @Bean
     @FlowPreview

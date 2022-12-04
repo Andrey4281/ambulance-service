@@ -8,5 +8,5 @@ import ru.ambulance.enums.DoctorSpecialization
 import ru.ambulance.enums.PatientState
 
 fun Appeal.toDto(): AppealDto = AppealDto(appealId, authorId, description, PatientState.valueOf(primaryPatientStatus), patientId, currentDoctorId, DoctorSpecialization.valueOf(primaryRequiredDoctor), hospitalId, AppealStatus.valueOf(appealStatus), currentCabinetNumber)
-fun Appeal.toCreatingAppealEvent(): CreatingAppealEvent = CreatingAppealEvent(eventId = appealId, primaryRequiredDoctor = DoctorSpecialization.valueOf(primaryRequiredDoctor))
+fun Appeal.toCreatingAppealEvent(): CreatingAppealEvent = CreatingAppealEvent(eventId = appealId, primaryRequiredDoctor = DoctorSpecialization.valueOf(primaryRequiredDoctor), hospitalId = hospitalId)
 fun AppealDto.toEntity(): Appeal = Appeal(id, authorId, description, primaryPatientStatus.name, patientId, currentDoctorId, primaryRequiredDoctor.name, hospitald, appealStatus.name, currentCabinetNumber)
