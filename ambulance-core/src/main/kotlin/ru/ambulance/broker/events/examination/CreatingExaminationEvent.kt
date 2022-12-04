@@ -22,5 +22,5 @@ data class CreatingExaminationEvent(
         /**
          * Список необходимых видов лечения для пациента
          */
-        var treatmentKindIds: List<Long> = Collections.emptyList(), override var eventId: UUID
+        var treatmentKindIds: List<Long> = Collections.emptyList(), override var eventId: String
 ): BaseEvent(eventId)

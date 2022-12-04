@@ -1,0 +1,142 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 8
+      author: asemenov
+      changes:
+        - insert:
+            schema: public
+            tableName: hospital
+            columns:
+              - column:
+                  name: id
+                  value: "6c5cbd72-6da0-11ed-a1eb-0242ac120002"
+              - column:
+                  name: name
+                  value: "Main Hospital"
+              - column:
+                  name: address
+                  value: "Chaykovskiy street"
+        - insert:
+            schema: public
+            tableName: document
+            columns:
+              - column:
+                  name: id
+                  value: "fdc75e98-6da0-11ed-a1eb-0242ac120002"
+              - column:
+                  name: series
+                  value: "4732"
+              - column:
+                  name: number
+                  value: "4732"
+              - column:
+                  name: issued_by
+                  value: "Main department"
+              - column:
+                  name: issued_date
+                  value: "1989-10-22"
+              - column:
+                  name: expiration_date
+                  value: "2030-10-22"
+        - insert:
+            schema: public
+            tableName: patient
+            columns:
+              - column:
+                  name: id
+                  value: "38119de2-6da2-11ed-a1eb-0242ac120002"
+              - column:
+                  name: first_name
+                  value: "Andrey"
+              - column:
+                  name: last_name
+                  value: "Semenov"
+              - column:
+                  name: patronymic
+                  value: "Vladimirovich"
+              - column:
+                  name: phone
+                  value: "89001999487"
+              - column:
+                  name: email
+                  value: "Andrey4281@yandex.ru"
+              - column:
+                  name: address
+                  value: "Lenin Street"
+              - column:
+                  name: doc_type_id
+                  value: "fdc75e98-6da0-11ed-a1eb-0242ac120002"
+              - column:
+                  name: user_id
+                  value: "f5628334-6da2-11ed-a1eb-0242ac120002"
+              - column:
+                  name: gender
+                  value: "MAN"
+              - column:
+                  name: birth_date
+                  value: "1989-10-22"
+        - insert:
+            schema: public
+            tableName: hospital_room
+            columns:
+              - column:
+                  name: id
+                  value: "e59e7fb2-6e37-11ed-a1eb-0242ac120002"
+              - column:
+                  name: type
+                  value: "MAN_ROOM"
+              - column:
+                  name: hospital_id
+                  value: "6c5cbd72-6da0-11ed-a1eb-0242ac120002"
+              - column:
+                  name: cabinet_number
+                  value: "1"
+        - insert:
+            schema: public
+            tableName: hospital_room
+            columns:
+              - column:
+                  name: id
+                  value: "8077bc92-6e38-11ed-a1eb-0242ac120002"
+              - column:
+                  name: type
+                  value: "FEMALE_ROOM"
+              - column:
+                  name: hospital_id
+                  value: "6c5cbd72-6da0-11ed-a1eb-0242ac120002"
+              - column:
+                  name: cabinet_number
+                  value: "2"
+        - insert:
+            schema: public
+            tableName: hospital_room
+            columns:
+              - column:
+                  name: id
+                  value: "0334d00c-6e39-11ed-a1eb-0242ac120002"
+              - column:
+                  name: type
+                  value: "CHILD_ROOM"
+              - column:
+                  name: hospital_id
+                  value: "6c5cbd72-6da0-11ed-a1eb-0242ac120002"
+              - column:
+                  name: cabinet_number
+                  value: "3"
+        - insert:
+            schema: public
+            tableName: hospital_room
+            columns:
+              - column:
+                  name: id
+                  value: "202d61d8-6e39-11ed-a1eb-0242ac120002"
+              - column:
+                  name: type
+                  value: "URGENT_ROOM"
+              - column:
+                  name: hospital_id
+                  value: "6c5cbd72-6da0-11ed-a1eb-0242ac120002"
+              - column:
+                  name: cabinet_number
+                  value: "4"

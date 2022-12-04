@@ -1,0 +1,41 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 2
+      author: asemenov
+      changes:
+        - createTable:
+            schema: public
+            tableName: document
+            columns:
+              - column:
+                  name: id
+                  type: varchar(100)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: series
+                  type: varchar(256)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: number
+                  type: varchar(256)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: issued_by
+                  type: varchar(256)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: issued_date
+                  type: date
+                  constraints:
+                    nullable: false
+              - column:
+                  name: expiration_date
+                  type: date
+                  constraints:
+                    nullable: false

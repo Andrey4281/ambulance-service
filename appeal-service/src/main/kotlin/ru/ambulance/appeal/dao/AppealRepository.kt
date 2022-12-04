@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository
 import ru.ambulance.appeal.model.entity.Appeal
 
 @Repository
-interface AppealRepository : ReactiveCrudRepository<Appeal, String> {
+interface AppealRepository : ReactiveCrudRepository<Appeal, String>, AppealCustomRepository {
 }

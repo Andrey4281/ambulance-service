@@ -20,7 +20,7 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
-                  name: adress
+                  name: address
                   type: varchar(256)
                   constraints:
                     nullable: false

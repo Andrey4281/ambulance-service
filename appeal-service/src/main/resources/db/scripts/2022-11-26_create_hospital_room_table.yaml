@@ -1,0 +1,29 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 6
+      author: asemenov
+      changes:
+        - createTable:
+            schema: public
+            tableName: hospital_room
+            columns:
+              - column:
+                  name: id
+                  type: varchar(100)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: type
+                  type: varchar(100)
+              - column:
+                  name: hospital_id
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_hospital_room_hospital_id
+                    references: hospital(id)
+              - column:
+                  name: cabinet_number
+                  type: integer

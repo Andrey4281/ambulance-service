@@ -1,0 +1,36 @@
+server:
+  port: 8082
+
+
+spring:
+  kafka:
+    consumer:
+      group-id: doctor-group
+  profiles:
+    include: jdbc, swagger, kafka
+    # disable CONDITIONS EVALUATION REPORT
+  devtools:
+    restart:
+      log-condition-evaluation-delta: false
+  application:
+    name: doctor-service
+
+# actuator settings
+management:
+  health:
+    default:
+      enabled: true
+    db:
+      enabled: true
+  endpoint:
+    health:
+      showDetails: always
+  endpoints:
+    web:
+      exposure:
+        include: health, prometheus, info, openapi, swaggerui
+  metrics:
+    export:
+      prometheus:
+        enabled: true
+

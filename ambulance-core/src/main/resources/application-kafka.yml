@@ -12,6 +12,8 @@ spring:
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
 
 kafka:
+  topics:
+    appealRequestTopic: appealRequestTopic
   retry:
     count: 3
     retryTopic: retryTopic

@@ -1,0 +1,32 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 1
+      author: ymuradov
+      changes:
+        - createTable:
+            schema: public
+            tableName: treatment_assignment
+            columns:
+              - column:
+                  name: id
+                  type: varchar(100)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: examination_id
+                  type: varchar(150)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: treatment_kind_id
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: is_executed
+                  type: boolean
+                  defaultValue: false
+                  constraints:
+                    nullable: false

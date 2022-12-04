@@ -1,0 +1,21 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 1
+      author: ymuradov
+      changes:
+        - createTable:
+            schema: public
+            tableName: investigation_kind
+            columns:
+              - column:
+                  name: id
+                  type: varchar(100)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: name
+                  type: varchar(200)
+                  constraints:
+                    nullable: false
