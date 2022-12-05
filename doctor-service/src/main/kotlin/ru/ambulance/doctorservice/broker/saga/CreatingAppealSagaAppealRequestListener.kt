@@ -38,7 +38,8 @@ class CreatingAppealSagaAppealRequestListener : ReactiveKafkaConsumer<CreatingAp
     override fun getTopic(): String = appealRequestTopic
 
     //TODO asemenov подумать над оптимистик лок для shift - тк инкремент идет
-    //TODO проверить почему поток валится при ошибке и пустой кейс!!!!
+    //TODO проверить почему поток валится при ошибке и пустой кейс!!!! https://medium.com/geekculture/reactive-programming-reactor-part-3-errors-handling-cd535e9952e2
+    //TODO https://devdojo.com/ketonemaniac/reactor-onerrorcontinue-vs-onerrorresume
     @Transactional
     override fun getSuccessHandler(creatingAppealEvent: CreatingAppealEvent): Mono<OutboxEvent> {
         return doctorService.findRequiredDoctorWithMinActiveAppeal(hospitalId = creatingAppealEvent.hospitalId,
@@ -57,4 +58,6 @@ class CreatingAppealSagaAppealRequestListener : ReactiveKafkaConsumer<CreatingAp
     }
 
     override fun getEventClass(): Class<CreatingAppealEvent> = CreatingAppealEvent::class.java
+
+    override fun getErrorObject(): OutboxEvent = OutboxEvent(eventId = "", messageKey="", eventBodyJson = "", sendToTopic = "")
 }

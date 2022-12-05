@@ -24,20 +24,25 @@ import ru.ambulance.function.logger
  * Общий конфигурационный класс для Kafka Consumer
  */
 @Configuration
-abstract class ReactiveKafkaConsumer<T : BaseEvent, D> {
+abstract class ReactiveKafkaConsumer<T : BaseEvent, D : Any> {
 
     @Autowired
     private lateinit var reactiveKafkaProducerTemplate: ReactiveKafkaProducerTemplate<String, String>
+
     @Autowired
     private lateinit var defaultKafkaHeaderMapper: DefaultKafkaHeaderMapper
 
     private val log = logger()
+
     @Value("\${kafka.retry.count}")
     private val retryCount: Int = 3
+
     @Value("\${kafka.retry.retryTopic}")
     private val retryTopic: String = "retryTopic"
+
     @Value("\${kafka.retry.deadLetterTopic}")
     private val deadLetterTopic: String = "deadLetterTopic"
+
     @Value("\${spring.application.name}")
     private val applicationName: String = ""
 
@@ -53,20 +58,20 @@ abstract class ReactiveKafkaConsumer<T : BaseEvent, D> {
                 val reactiveKafkaConsumerTemplate: ReactiveKafkaConsumerTemplate<String, String> =
                         ReactiveKafkaConsumerTemplate(receiverOptions)
 
-                    reactiveKafkaConsumerTemplate
-                            .receiveAutoAck()
-                            .doOnNext { log.info("topic=${it.topic()} key=${it.key()} value=${it.value()} offset=${it.offset()}") }
-                            .flatMap {
-                                try {
-                                    getSuccessHandler(objectMapper.readValue(it.value(), getEventClass()))
-                                } catch (e: java.lang.Exception) {
-                                    getErrorHandler(it, e)
-                                }
-                            }
-                            .subscribe()
+                reactiveKafkaConsumerTemplate
+                        .receiveAutoAck()
+                        .doOnNext { log.info("topic=${it.topic()} key=${it.key()} value=${it.value()} offset=${it.offset()}") }
+                        .flatMap {
+                            val consumerRecord = it
+                            getSuccessHandler(objectMapper.readValue(it.value(), getEventClass()))
+                                    .onErrorResume { getErrorHandler(consumerRecord, it).then(Mono.just(getErrorObject()))}
+                        }
+                        .subscribe()
             }
         }
     }
+
+    abstract fun getErrorObject(): D
 
     abstract fun getTopic(): String
 

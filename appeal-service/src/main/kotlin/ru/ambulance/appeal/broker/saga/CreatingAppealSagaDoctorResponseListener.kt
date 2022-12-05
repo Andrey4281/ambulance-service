@@ -12,7 +12,7 @@ import ru.ambulance.config.broker.ReactiveKafkaConsumer
 import ru.ambulance.enums.AppealStatus
 
 @Configuration
-class CreatingAppealSagaDoctorResponseListener: ReactiveKafkaConsumer<DoctorResponseOnCreatingAppealEvent, Appeal>() {
+class CreatingAppealSagaDoctorResponseListener : ReactiveKafkaConsumer<DoctorResponseOnCreatingAppealEvent, Appeal>() {
 
     @Value("\${kafka.topics.appealResponseTopic}")
     private val appealResponseTopic: String = "appealResponseTopic"
@@ -36,5 +36,10 @@ class CreatingAppealSagaDoctorResponseListener: ReactiveKafkaConsumer<DoctorResp
         }
     }
 
-   override fun getEventClass(): Class<DoctorResponseOnCreatingAppealEvent> = DoctorResponseOnCreatingAppealEvent::class.java
+    override fun getEventClass(): Class<DoctorResponseOnCreatingAppealEvent> = DoctorResponseOnCreatingAppealEvent::class.java
+
+    override fun getErrorObject(): Appeal = Appeal(appealId = "", authorId = "",
+            description = "", primaryPatientStatus = "",
+            patientId = "", primaryRequiredDoctor = "",
+            hospitalId = "")
 }
