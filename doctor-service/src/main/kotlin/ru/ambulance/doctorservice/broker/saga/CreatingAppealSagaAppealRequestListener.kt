@@ -9,16 +9,14 @@ import ru.ambulance.broker.events.appeal.CreatingAppealEvent
 import ru.ambulance.broker.events.appeal.DoctorResponseOnCreatingAppealEvent
 import ru.ambulance.broker.events.outbox.OutboxEvent
 import ru.ambulance.broker.service.MessageService
-import ru.ambulance.config.broker.ReactiveKafkaConsumer
+import ru.ambulance.doctorservice.broker.AbstractDoctorServiceListener
 import ru.ambulance.doctorservice.service.DoctorService
 import ru.ambulance.doctorservice.service.DoctorShiftService
 import ru.ambulance.enums.AppealStatus
 import java.util.*
 
-//https://habr.com/ru/post/565056/
-//https://lankydan.dev/2018/03/15/doing-stuff-with-spring-webflux
 @Configuration
-class CreatingAppealSagaAppealRequestListener : ReactiveKafkaConsumer<CreatingAppealEvent, OutboxEvent>() {
+class CreatingAppealSagaAppealRequestListener : AbstractDoctorServiceListener<CreatingAppealEvent, OutboxEvent>() {
 
     @Value("\${kafka.topics.appealRequestTopic}")
     private val appealRequestTopic: String = "appealRequestTopic"
@@ -38,8 +36,6 @@ class CreatingAppealSagaAppealRequestListener : ReactiveKafkaConsumer<CreatingAp
     override fun getTopic(): String = appealRequestTopic
 
     //TODO asemenov подумать над оптимистик лок для shift - тк инкремент идет
-    //TODO проверить почему поток валится при ошибке и пустой кейс!!!! https://medium.com/geekculture/reactive-programming-reactor-part-3-errors-handling-cd535e9952e2
-    //TODO https://devdojo.com/ketonemaniac/reactor-onerrorcontinue-vs-onerrorresume
     @Transactional
     override fun getSuccessHandler(creatingAppealEvent: CreatingAppealEvent): Mono<OutboxEvent> {
         return doctorService.findRequiredDoctorWithMinActiveAppeal(hospitalId = creatingAppealEvent.hospitalId,

@@ -5,14 +5,14 @@ import org.springframework.beans.factory.annotation.Value
 import org.springframework.context.annotation.Configuration
 import org.springframework.transaction.annotation.Transactional
 import reactor.core.publisher.Mono
+import ru.ambulance.appeal.broker.AbstractAppealServiceListener
 import ru.ambulance.appeal.model.entity.Appeal
 import ru.ambulance.appeal.service.AppealService
 import ru.ambulance.broker.events.appeal.DoctorResponseOnCreatingAppealEvent
-import ru.ambulance.config.broker.ReactiveKafkaConsumer
 import ru.ambulance.enums.AppealStatus
 
 @Configuration
-class CreatingAppealSagaDoctorResponseListener : ReactiveKafkaConsumer<DoctorResponseOnCreatingAppealEvent, Appeal>() {
+class CreatingAppealSagaDoctorResponseListener : AbstractAppealServiceListener<DoctorResponseOnCreatingAppealEvent, Appeal>() {
 
     @Value("\${kafka.topics.appealResponseTopic}")
     private val appealResponseTopic: String = "appealResponseTopic"

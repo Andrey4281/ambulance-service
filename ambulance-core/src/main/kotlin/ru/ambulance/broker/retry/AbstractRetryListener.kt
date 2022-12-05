@@ -1,11 +1,9 @@
 package ru.ambulance.broker.retry
 
 import org.apache.kafka.clients.producer.ProducerRecord
-import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.ApplicationRunner
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties
 import org.springframework.context.annotation.Bean
-import org.springframework.context.annotation.Configuration
 import org.springframework.kafka.core.reactive.ReactiveKafkaConsumerTemplate
 import org.springframework.kafka.core.reactive.ReactiveKafkaProducerTemplate
 import org.springframework.kafka.support.DefaultKafkaHeaderMapper
@@ -13,13 +11,11 @@ import org.springframework.messaging.MessageHeaders
 import reactor.kafka.receiver.ReceiverOptions
 import ru.ambulance.function.logger
 
-@Configuration
-open class RetryListener {
+abstract class AbstractRetryListener {
 
     private val log = logger()
 
-    @Value("\${kafka.retry.retryTopic}")
-    private val retryTopic: String = "retryTopic"
+    abstract fun getRetryTopic() : String
 
     @Bean
     open fun retry(kafkaProperties: KafkaProperties,
@@ -27,7 +23,7 @@ open class RetryListener {
                    reactiveKafkaProducerTemplate: ReactiveKafkaProducerTemplate<String, String>): ApplicationRunner {
         return ApplicationRunner {
             val receiverOptions: ReceiverOptions<String, String> = ReceiverOptions.create<String, String>(kafkaProperties.buildConsumerProperties())
-                    .subscription(listOf(retryTopic))
+                    .subscription(listOf(getRetryTopic()))
             val reactiveKafkaConsumerTemplate: ReactiveKafkaConsumerTemplate<String, String> =
                     ReactiveKafkaConsumerTemplate(receiverOptions)
 

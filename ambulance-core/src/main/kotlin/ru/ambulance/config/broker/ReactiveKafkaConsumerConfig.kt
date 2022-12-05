@@ -37,12 +37,6 @@ abstract class ReactiveKafkaConsumer<T : BaseEvent, D : Any> {
     @Value("\${kafka.retry.count}")
     private val retryCount: Int = 3
 
-    @Value("\${kafka.retry.retryTopic}")
-    private val retryTopic: String = "retryTopic"
-
-    @Value("\${kafka.retry.deadLetterTopic}")
-    private val deadLetterTopic: String = "deadLetterTopic"
-
     @Value("\${spring.application.name}")
     private val applicationName: String = ""
 
@@ -84,9 +78,9 @@ abstract class ReactiveKafkaConsumer<T : BaseEvent, D : Any> {
         val currentRetryCount: Int = (consumerRecordHeaders["currentRetryCount"] ?: retryCount) as Int
 
         val errorProducerRecord: ProducerRecord<String, String> = if (currentRetryCount > 0) {
-            ProducerRecord(retryTopic, consumerRecord.key(), consumerRecord.value())
+            ProducerRecord(getRetryTopicName(), consumerRecord.key(), consumerRecord.value())
         } else {
-            ProducerRecord(deadLetterTopic, consumerRecord.key(), consumerRecord.value())
+            ProducerRecord(getDeadLetterTopicName(), consumerRecord.key(), consumerRecord.value())
         }
 
         val producerHeaders: MutableMap<String, Any> = HashMap()
@@ -102,4 +96,8 @@ abstract class ReactiveKafkaConsumer<T : BaseEvent, D : Any> {
     }
 
     abstract fun getEventClass(): Class<T>
+
+    abstract fun getRetryTopicName(): String
+
+    abstract fun getDeadLetterTopicName(): String
 }

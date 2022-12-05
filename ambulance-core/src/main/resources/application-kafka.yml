@@ -16,9 +16,12 @@ kafka:
     appealRequestTopic: appealRequestTopic
     appealResponseTopic: appealResponseTopic
   retry:
+    appealRetryTopic: appealRetryTopic
+    appealDeadLetterTopic: appealDeadLetterTopic
+    doctorRetryTopic: doctorRetryTopic
+    doctorDeadLetterTopic: doctorDeadLetterTopic
     count: 3
     retryTopic: retryTopic
-    deadLetterTopic: deadLetterTopic
 
 outbox:
   fixed-delay-sending-in-milliseconds: 5000
