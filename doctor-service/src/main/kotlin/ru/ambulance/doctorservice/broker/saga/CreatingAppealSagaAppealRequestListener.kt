@@ -38,7 +38,6 @@ class CreatingAppealSagaAppealRequestListener : ReactiveKafkaConsumer<CreatingAp
     override fun getTopic(): String = appealRequestTopic
 
     //TODO asemenov подумать над оптимистик лок для shift - тк инкремент идет
-    //TODO asemenov appealId = creatingAppealEvent.eventId временное решение
     //TODO проверить почему поток валится при ошибке и пустой кейс!!!!
     @Transactional
     override fun getSuccessHandler(creatingAppealEvent: CreatingAppealEvent): Mono<OutboxEvent> {
