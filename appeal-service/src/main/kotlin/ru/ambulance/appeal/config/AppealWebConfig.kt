@@ -29,6 +29,12 @@ class AppealWebConfig: WebConfig() {
                     .beanClass(AppealService::class.java)
                     .beanMethod("createNewAppeal")
         }
+        PUT("/appeal/takeAppealForWork/{appealId}", accept(MediaType.APPLICATION_JSON), appealHandler::takeAppealForWork)
+        {
+            it.operationId("updateAppealStatus")
+                    .beanClass(AppealService::class.java)
+                    .beanMethod("updateAppealStatus")
+        }
     }
 
 }

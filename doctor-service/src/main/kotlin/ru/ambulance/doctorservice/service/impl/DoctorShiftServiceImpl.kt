@@ -4,7 +4,7 @@ import org.springframework.stereotype.Service
 import reactor.core.publisher.Mono
 import ru.ambulance.doctorservice.dao.DoctorShiftRepository
 import ru.ambulance.doctorservice.model.entity.DoctorShift
-import ru.ambulance.doctorservice.model.entity.exceptions.ActiveShiftAlreadyExistsException
+import ru.ambulance.doctorservice.model.exceptions.ActiveShiftAlreadyExistsException
 import ru.ambulance.doctorservice.service.DoctorShiftService
 import java.time.OffsetDateTime
 import java.time.ZoneId

@@ -11,6 +11,7 @@ import ru.ambulance.appeal.model.dto.AppealDto
 import ru.ambulance.appeal.model.mapper.toDto
 import ru.ambulance.appeal.model.rdto.CreateAppealRdto
 import ru.ambulance.appeal.service.AppealService
+import ru.ambulance.enums.AppealStatus
 
 @Component
 class AppealHandler(val appealService: AppealService) {
@@ -29,5 +30,14 @@ class AppealHandler(val appealService: AppealService) {
                         .body(fromPublisher(appealService.showAppealList(params.getFirst("appealStatues")?.split(","),
                                 params.getFirst("appealIds")?.split(","), params.getFirst("doctorId")).map { it.toDto() },
                                 AppealDto::class.java))
+        }
+
+        fun takeAppealForWork(request: ServerRequest): Mono<ServerResponse> {
+                val appealId = request.pathVariable("appealId")
+                val params = request.queryParams()
+                return ok()
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .body(appealService.updateAppealStatus(doctorId = params.getFirst("doctorId")!!,
+                                appealId, AppealStatus.IN_PROGRESS), String::class.java)
         }
 }

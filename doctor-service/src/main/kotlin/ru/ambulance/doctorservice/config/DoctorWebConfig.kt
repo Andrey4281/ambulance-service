@@ -23,7 +23,7 @@ class DoctorWebConfig: WebConfig() {
                     .beanClass(DoctorShiftService::class.java)
                     .beanMethod("beginShift")
         }
-        POST("/doctor/endShift/{doctorId}", accept(MediaType.APPLICATION_JSON), doctorHandler::endShift)
+        PUT("/doctor/endShift/{doctorId}", accept(MediaType.APPLICATION_JSON), doctorHandler::endShift)
         {
             it.operationId("endShift")
                     .beanClass(DoctorShiftService::class.java)
