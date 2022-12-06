@@ -2,11 +2,11 @@ databaseChangeLog:
 
   - changeSet:
       id: 1
-      author: ymuradov
+      author: asemenov
       changes:
         - createTable:
             schema: public
-            tableName: treatment_kind
+            tableName: investigation_kind
             columns:
               - column:
                   name: id

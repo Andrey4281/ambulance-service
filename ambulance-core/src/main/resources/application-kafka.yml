@@ -1,13 +1,13 @@
 spring:
   kafka:
     producer:
-      bootstrap-servers: localhost:9093
+      bootstrap-servers: ${KAFKA_HOSTNAME:localhost}:${KAFKA_PORT:9093}
       key-serializer: org.apache.kafka.common.serialization.StringSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
     consumer:
       auto-offset-reset: earliest
 #      auto-offset-reset: latest
-      bootstrap-servers: localhost:9093
+      bootstrap-servers: ${KAFKA_HOSTNAME:localhost}:${KAFKA_PORT:9093}
       value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
       key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
 
