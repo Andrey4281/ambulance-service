@@ -3,3 +3,17 @@ databaseChangeLog:
       file: db/scripts/2022-12-06_create_investigation_kind_table.yaml
   - include:
       file: db/scripts/2022-12-06_create_treatment_kind_table.yaml
+  - include:
+      file: db/scripts/2022-12-06_create_nurse_table.yaml
+  - include:
+      file: db/scripts/2022-12-07_create_investigation_result_table.yaml
+  - include:
+      file: db/scripts/2022-12-07_create_treatment_result_table.yaml
+  - include:
+      file: db/scripts/2022-12-07_create_nurse_shift_table.yaml
+  - include:
+      file: db/scripts/2022-12-07_create_nurse_treatment_kind_relation_table.yaml
+  - include:
+      file: db/scripts/2022-12-07_create_nurse_investigation_kind_relation_table.yaml
+  - include:
+      file: db/scripts/2022-12-07_create_outbox_table.yaml

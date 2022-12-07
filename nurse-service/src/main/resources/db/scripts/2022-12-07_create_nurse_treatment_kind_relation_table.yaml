@@ -1,0 +1,33 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 1
+      author: asemenov
+      changes:
+        - createTable:
+            schema: public
+            tableName: nurse_treatment_kind_relation
+            columns:
+              - column:
+                  name: nurse_id
+                  type: varchar(100)
+                  constraints:
+                    foreignKeyName: fk_nurse_treatment_kind_relation_nurse_id
+                    references: nurse(id)
+              - column:
+                  name: treatment_kind_id
+                  type: varchar(100)
+                  constraints:
+                    foreignKeyName: fk_nurse_treatment_kind_relation_treatment_kind_id
+                    references: treatment_kind(id)
+        - createIndex:
+            clustered:  true
+            columns:
+              - column:
+                  name: nurse_id
+              - column:
+                  name: treatment_kind_id
+            indexName: idx_nurse_treatment_kind_relation_nurse_id_and_treatment_kind_id
+            schemaName: public
+            tableName: nurse_treatment_kind_relation
+            unique: true

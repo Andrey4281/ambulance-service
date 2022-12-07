@@ -1,0 +1,62 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 1
+      author: asemenov
+      changes:
+        - createTable:
+            schema: public
+            tableName: nurse_shift
+            columns:
+              - column:
+                  name: id
+                  type: varchar(100)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: nurse_id
+                  type: varchar(100)
+                  constraints:
+                    foreignKeyName: fk_nurse_shift_nurse_id
+                    references: nurse(id)
+              - column:
+                  name: is_active
+                  type: boolean
+                  defaultValue: false
+                  constraints:
+                    nullable: false
+              - column:
+                  name: date
+                  type: timestamp
+                  constraints:
+                    nullable: false
+              - column:
+                  name: tzone
+                  type: varchar(40)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: active_investigation_count
+                  type: smallint
+                  defaultValue: 0
+                  constraints:
+                    nullable: false
+              - column:
+                  name: total_investigation_count
+                  type: smallint
+                  defaultValue: 0
+                  constraints:
+                    nullable: false
+              - column:
+                  name: active_treatment_count
+                  type: smallint
+                  defaultValue: 0
+                  constraints:
+                    nullable: false
+              - column:
+                  name: total_treatment_count
+                  type: smallint
+                  defaultValue: 0
+                  constraints:
+                    nullable: false
