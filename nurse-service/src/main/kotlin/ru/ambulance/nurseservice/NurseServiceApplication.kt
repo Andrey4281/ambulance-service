@@ -14,7 +14,7 @@ import org.springframework.web.reactive.config.EnableWebFlux
         "ru.ambulance.broker.service",
         "ru.ambulance.nurseservice"))
 @EnableWebFlux
-@OpenAPIDefinition(info = Info(title = "Swagger Doctor Service", version = "1.0", description = "Documentation APIs v1.0"))
+@OpenAPIDefinition(info = Info(title = "Swagger Nurse Service", version = "1.0", description = "Documentation APIs v1.0"))
 class NurseServiceApplication
 
 fun main(args: Array<String>) {

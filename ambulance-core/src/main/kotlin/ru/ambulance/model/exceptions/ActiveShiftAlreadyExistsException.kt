@@ -1,3 +1,3 @@
-package ru.ambulance.doctorservice.model.exceptions
+package ru.ambulance.model.exceptions
 
 class ActiveShiftAlreadyExistsException(message: String?): Exception(message)

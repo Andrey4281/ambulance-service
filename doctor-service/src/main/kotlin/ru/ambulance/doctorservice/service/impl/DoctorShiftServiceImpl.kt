@@ -1,10 +1,11 @@
 package ru.ambulance.doctorservice.service.impl
 
 import org.springframework.stereotype.Service
+import org.springframework.transaction.annotation.Transactional
 import reactor.core.publisher.Mono
 import ru.ambulance.doctorservice.dao.DoctorShiftRepository
 import ru.ambulance.doctorservice.model.entity.DoctorShift
-import ru.ambulance.doctorservice.model.exceptions.ActiveShiftAlreadyExistsException
+import ru.ambulance.model.exceptions.ActiveShiftAlreadyExistsException
 import ru.ambulance.doctorservice.service.DoctorShiftService
 import java.time.OffsetDateTime
 import java.time.ZoneId
@@ -15,6 +16,7 @@ class DoctorShiftServiceImpl(private val doctorShiftRepository: DoctorShiftRepos
 
     //TODO asemenov webflux обработку исключения
     //TODO asemenov могут быть проблемы если две параллельные транзакции
+    @Transactional
     override fun beginShift(doctorId: String, tZone: String): Mono<String> {
         return doctorShiftRepository.isExistActiveDoctorShift(doctorId).flatMap {
             if (it) {
