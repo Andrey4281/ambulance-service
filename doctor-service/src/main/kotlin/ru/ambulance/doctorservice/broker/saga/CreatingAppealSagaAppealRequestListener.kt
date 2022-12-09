@@ -8,8 +8,8 @@ import reactor.core.publisher.Mono
 import ru.ambulance.broker.events.appeal.CreatingAppealEvent
 import ru.ambulance.broker.events.appeal.DoctorResponseOnCreatingAppealEvent
 import ru.ambulance.broker.events.outbox.OutboxEvent
-import ru.ambulance.broker.service.MessageService
 import ru.ambulance.doctorservice.broker.AbstractDoctorServiceListener
+import ru.ambulance.doctorservice.broker.outbox.DoctorMessageServiceImpl
 import ru.ambulance.doctorservice.service.DoctorService
 import ru.ambulance.doctorservice.service.DoctorShiftService
 import ru.ambulance.enums.AppealStatus
@@ -31,7 +31,7 @@ class CreatingAppealSagaAppealRequestListener : AbstractDoctorServiceListener<Cr
     private lateinit var doctorShiftService: DoctorShiftService
 
     @Autowired
-    private lateinit var doctorMessageService: MessageService<DoctorResponseOnCreatingAppealEvent>
+    private lateinit var doctorMessageService: DoctorMessageServiceImpl
 
     override fun getTopic(): String = appealRequestTopic
 

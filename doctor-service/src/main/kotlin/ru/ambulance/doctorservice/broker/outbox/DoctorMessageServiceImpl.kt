@@ -9,8 +9,7 @@ import ru.ambulance.broker.service.MessageService
 import ru.ambulance.doctorservice.dao.OutboxEventRepository
 
 @Service
-class DoctorMessageServiceImpl(private val objectMapper: ObjectMapper, private val outboxEventRepository: OutboxEventRepository)
-    : MessageService<DoctorResponseOnCreatingAppealEvent>(objectMapper) {
+class DoctorMessageServiceImpl(private val objectMapper: ObjectMapper, private val outboxEventRepository: OutboxEventRepository) : MessageService(objectMapper) {
 
     override fun saveMessageToDb(outboxEvent: OutboxEvent): Mono<OutboxEvent> = outboxEventRepository.save(outboxEvent)
 }

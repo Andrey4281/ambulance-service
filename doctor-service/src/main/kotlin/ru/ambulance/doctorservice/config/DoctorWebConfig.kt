@@ -10,6 +10,7 @@ import org.springframework.web.reactive.function.server.ServerResponse
 import ru.ambulance.config.web.WebConfig
 import ru.ambulance.doctorservice.controller.DoctorHandler
 import ru.ambulance.doctorservice.service.DoctorShiftService
+import ru.ambulance.doctorservice.service.ExaminationService
 
 @Configuration
 class DoctorWebConfig: WebConfig() {
@@ -28,6 +29,12 @@ class DoctorWebConfig: WebConfig() {
             it.operationId("endShift")
                     .beanClass(DoctorShiftService::class.java)
                     .beanMethod("endShift")
+        }
+        POST("/doctor/createNewExamination", accept(MediaType.APPLICATION_JSON), doctorHandler::createExamination)
+        {
+            it.operationId("createNewExamination")
+                    .beanClass(ExaminationService::class.java)
+                    .beanMethod("createNewExamination")
         }
     }
 }
