@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.boot.ApplicationRunner
 import org.springframework.boot.autoconfigure.kafka.KafkaProperties
-import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.kafka.core.reactive.ReactiveKafkaConsumerTemplate
 import org.springframework.kafka.core.reactive.ReactiveKafkaProducerTemplate
@@ -40,9 +39,11 @@ abstract class ReactiveKafkaConsumer<T : BaseEvent, D : Any> {
     @Value("\${spring.application.name}")
     private val applicationName: String = ""
 
-    @Bean
-    open fun consumer(kafkaProperties: KafkaProperties,
-                      objectMapper: ObjectMapper):
+    abstract fun consumer(kafkaProperties: KafkaProperties,
+                          objectMapper: ObjectMapper) : ApplicationRunner
+
+    open fun abstractConsumer(kafkaProperties: KafkaProperties,
+                              objectMapper: ObjectMapper):
             ApplicationRunner {
         return ApplicationRunner {
             run {

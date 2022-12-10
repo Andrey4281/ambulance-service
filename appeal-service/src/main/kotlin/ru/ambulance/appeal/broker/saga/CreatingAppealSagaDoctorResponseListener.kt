@@ -1,7 +1,11 @@
 package ru.ambulance.appeal.broker.saga
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.ApplicationRunner
+import org.springframework.boot.autoconfigure.kafka.KafkaProperties
+import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.transaction.annotation.Transactional
 import reactor.core.publisher.Mono
@@ -10,9 +14,14 @@ import ru.ambulance.appeal.model.entity.Appeal
 import ru.ambulance.appeal.service.AppealService
 import ru.ambulance.broker.events.appeal.DoctorResponseOnCreatingAppealEvent
 import ru.ambulance.enums.AppealStatus
+import javax.annotation.PostConstruct
 
 @Configuration
 class CreatingAppealSagaDoctorResponseListener : AbstractAppealServiceListener<DoctorResponseOnCreatingAppealEvent, Appeal>() {
+    @PostConstruct
+    fun init() {
+        println("CreatingAppealSagaDoctorResponseListener INITED")
+    }
 
     @Value("\${kafka.topics.appealResponseTopic}")
     private val appealResponseTopic: String = "appealResponseTopic"
@@ -23,14 +32,14 @@ class CreatingAppealSagaDoctorResponseListener : AbstractAppealServiceListener<D
     override fun getTopic(): String = appealResponseTopic
 
     @Transactional
-    override fun getSuccessHandler(responseEvent: DoctorResponseOnCreatingAppealEvent): Mono<Appeal> {
-        return responseEvent.appealId.let { appealService.findById(it) }.flatMap {
+    override fun getSuccessHandler(value: DoctorResponseOnCreatingAppealEvent): Mono<Appeal> {
+        return value.appealId.let { appealService.findById(it) }.flatMap {
             it.isNewObject = false
-            if (responseEvent.isSuccess) {
+            if (value.isSuccess) {
                 it.appealStatus = AppealStatus.ASSIGNED.name
-                it.currentDoctorId = responseEvent.doctorId
+                it.currentDoctorId = value.doctorId
             } else {
-                it.appealStatus = responseEvent.appealStatus.name
+                it.appealStatus = value.appealStatus.name
             }
             appealService.save(it)
         }
@@ -42,4 +51,7 @@ class CreatingAppealSagaDoctorResponseListener : AbstractAppealServiceListener<D
             description = "", primaryPatientStatus = "",
             patientId = "", primaryRequiredDoctor = "",
             hospitalId = "")
+
+    @Bean("CreatingAppealSagaDoctorResponseListener")
+    override fun consumer(kafkaProperties: KafkaProperties, objectMapper: ObjectMapper): ApplicationRunner = abstractConsumer(kafkaProperties, objectMapper)
 }

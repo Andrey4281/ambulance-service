@@ -1,7 +1,11 @@
 package ru.ambulance.doctorservice.broker.saga
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.ApplicationRunner
+import org.springframework.boot.autoconfigure.kafka.KafkaProperties
+import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.transaction.annotation.Transactional
 import reactor.core.publisher.Mono
@@ -56,4 +60,7 @@ class CreatingAppealSagaAppealRequestListener : AbstractDoctorServiceListener<Cr
     override fun getEventClass(): Class<CreatingAppealEvent> = CreatingAppealEvent::class.java
 
     override fun getErrorObject(): OutboxEvent = OutboxEvent(eventId = "", messageKey="", eventBodyJson = "", sendToTopic = "")
+
+    @Bean("CreatingAppealSagaAppealRequestListener")
+    override fun consumer(kafkaProperties: KafkaProperties, objectMapper: ObjectMapper): ApplicationRunner = abstractConsumer(kafkaProperties, objectMapper)
 }

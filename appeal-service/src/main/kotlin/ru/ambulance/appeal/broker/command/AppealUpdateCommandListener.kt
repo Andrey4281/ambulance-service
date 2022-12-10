@@ -1,6 +1,10 @@
 package ru.ambulance.appeal.broker.command
 
+import com.fasterxml.jackson.databind.ObjectMapper
 import org.springframework.beans.factory.annotation.Value
+import org.springframework.boot.ApplicationRunner
+import org.springframework.boot.autoconfigure.kafka.KafkaProperties
+import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import reactor.core.publisher.Mono
 import ru.ambulance.appeal.broker.AbstractAppealServiceListener
@@ -9,7 +13,7 @@ import ru.ambulance.appeal.service.AppealService
 import ru.ambulance.broker.events.appeal.UpdateAppealEvent
 
 @Configuration
-class AppealCommandListener(private val appealService: AppealService) : AbstractAppealServiceListener<UpdateAppealEvent, Appeal>() {
+class AppealUpdateCommandListener(private val appealService: AppealService) : AbstractAppealServiceListener<UpdateAppealEvent, Appeal>() {
 
     @Value("\${kafka.topics.appealCommandTopic}")
     private val appealCommandTopic: String = "appealCommandTopic"
@@ -30,4 +34,8 @@ class AppealCommandListener(private val appealService: AppealService) : Abstract
     }
 
     override fun getEventClass(): Class<UpdateAppealEvent> = UpdateAppealEvent::class.java
+
+    @Bean("AppealUpdateCommandListener")
+    override fun consumer(kafkaProperties: KafkaProperties, objectMapper: ObjectMapper): ApplicationRunner =
+            abstractConsumer(kafkaProperties, objectMapper)
 }

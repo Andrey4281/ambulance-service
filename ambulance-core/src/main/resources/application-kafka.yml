@@ -22,6 +22,8 @@ kafka:
     appealDeadLetterTopic: appealDeadLetterTopic
     doctorRetryTopic: doctorRetryTopic
     doctorDeadLetterTopic: doctorDeadLetterTopic
+    nurseRetryTopic: nurseRetryTopic
+    nurseDeadLetterTopic: nurseDeadLetterTopic
     count: 3
     retryTopic: retryTopic
 

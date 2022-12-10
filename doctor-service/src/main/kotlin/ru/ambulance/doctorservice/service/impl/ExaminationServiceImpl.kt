@@ -10,13 +10,15 @@ import ru.ambulance.doctorservice.broker.outbox.DoctorMessageServiceImpl
 import ru.ambulance.doctorservice.dao.ExaminationRepository
 import ru.ambulance.doctorservice.model.mapper.toExamination
 import ru.ambulance.doctorservice.model.rdto.ExaminationRdto
+import ru.ambulance.doctorservice.service.DoctorShiftService
 import ru.ambulance.doctorservice.service.ExaminationService
 import ru.ambulance.enums.AppealStatus
 import java.util.UUID
 
 @Service
 class ExaminationServiceImpl(private val examinationRepository: ExaminationRepository,
-                             private val doctorMessageService: DoctorMessageServiceImpl) : ExaminationService {
+                             private val doctorMessageService: DoctorMessageServiceImpl,
+                             private val doctorShiftService: DoctorShiftService) : ExaminationService {
 
     @Value("\${kafka.topics.examinationRequestTopic}")
     private val examinationRequestTopic: String = "examinationRequestTopic"
@@ -24,6 +26,7 @@ class ExaminationServiceImpl(private val examinationRepository: ExaminationRepos
     @Value("\${kafka.topics.appealCommandTopic}")
     private val appealCommandTopic: String = "appealCommandTopic"
 
+    //TODO число активных обращений уменьшить на 1
     @Transactional
     override fun createNewExamination(examinationRdto: ExaminationRdto): Mono<String> {
         val examination = examinationRdto.toExamination()
@@ -32,7 +35,11 @@ class ExaminationServiceImpl(private val examinationRepository: ExaminationRepos
                     && examinationRdto.requiredTreatments.isEmpty()) {
                 val updateAppealEvent = UpdateAppealEvent(appealId = it.appealId, appealStatus = AppealStatus.RELEASED,
                         eventId = UUID.randomUUID().toString())
-                doctorMessageService.sendMessage(null, appealCommandTopic, updateAppealEvent)
+                doctorShiftService.findActiveShiftByDoctorId(examinationRdto.doctorId)
+                        .flatMap {
+                            it.activeAppealCount = it.activeAppealCount - 1
+                            doctorShiftService.updateShift(it)
+                        }.then(doctorMessageService.sendMessage(null, appealCommandTopic, updateAppealEvent))
             } else {
                 val creatingExaminationEvent = CreatingExaminationEvent(
                         appealId = it.appealId,

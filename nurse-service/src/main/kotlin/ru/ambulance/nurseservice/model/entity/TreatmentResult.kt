@@ -9,6 +9,7 @@ data class TreatmentResult(
         @Id
         @Column("id") val id: String,
         val examinationId: String,
+        val appealId: String,
         val treatmentKindId: String,
         var isExecuted: Boolean = false,
         val nurseId: String
