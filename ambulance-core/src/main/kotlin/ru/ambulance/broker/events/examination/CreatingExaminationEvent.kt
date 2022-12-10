@@ -8,6 +8,10 @@ import java.util.*
  */
 data class CreatingExaminationEvent(
         /**
+         * Идентификатор обращения пациента
+         */
+        var appealId: String,
+        /**
          * Идентификатор листа осмотра пациента
          */
         var examinationId: String,

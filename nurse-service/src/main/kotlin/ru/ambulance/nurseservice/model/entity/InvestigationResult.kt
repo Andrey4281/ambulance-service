@@ -9,6 +9,7 @@ data class InvestigationResult(
         @Id
         @Column("id") val id: String,
         val examinationId: String,
+        val appealId: String,
         var filePath: String?,
         val investigationKindId: String,
         var isExecuted: Boolean = false,

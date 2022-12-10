@@ -16,6 +16,7 @@ kafka:
     appealRequestTopic: appealRequestTopic
     appealResponseTopic: appealResponseTopic
     examinationRequestTopic: examinationRequestTopic
+    appealCommandTopic: appealCommandTopic
   retry:
     appealRetryTopic: appealRetryTopic
     appealDeadLetterTopic: appealDeadLetterTopic

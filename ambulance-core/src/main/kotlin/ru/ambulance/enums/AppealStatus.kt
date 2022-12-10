@@ -19,11 +19,7 @@ enum class AppealStatus {
     /**
      * Пациент сдает анализы
      */
-    INVESTIGATION,
-    /**
-     * Пациент проходит лечение
-     */
-    TREATMENT,
+    INVESTIGATION_TREATMENT,
     /**
      * Доктор готов для вынесения вердикта пациенту
      */

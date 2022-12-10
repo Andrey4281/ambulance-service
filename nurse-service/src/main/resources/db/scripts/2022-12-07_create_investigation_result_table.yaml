@@ -20,6 +20,11 @@ databaseChangeLog:
                   constraints:
                     nullable: false
               - column:
+                  name: appeal_id
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
                   name: file_path
                   type: varchar(256)
               - column:
