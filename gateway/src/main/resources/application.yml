@@ -4,36 +4,29 @@ server:
 spring:
   application:
     name: gateway
-  cloud:
-    gateway:
-      default-filters:
-        - TokenRelay
-      routes:
-        - id: gateway
-          uri: http://127.0.0.1:8040
-          predicates:
-            - Path=/api/**
-          filters:
-            - RemoveRequestHeader=Cookie
   security:
     oauth2:
       client:
-        provider:
-          keycloak:
-            token-uri: http://127.0.0.1:8080/auth/realms/my_realm/protocol/openid-connect/token
-            authorization-uri: http://127.0.0.1:8080/auth/realms/my_realm/protocol/openid-connect/auth
-            userinfo-uri: http://127.0.0.1:8080/auth/realms/my_realm/protocol/openid-connect/userinfo
-            user-name-attribute: preferred_username
-        registration:
-          my_client_a:
-            provider: keycloak
-            client-id: my_client_a
-            client-secret: 6837cbe5-61b7-4f47-8583-bfcaa028b0e1
-            authorization-grant-type: authorization_code
-            redirect-uri: "{baseUrl}/login/oauth2/code/keycloak"
-          my_client_b:
-            provider: keycloak
-            client-id: my_client_b
-            client-secret: 5c810447-8c8d-4bbe-947b-741ff0ff1000
-            authorization-grant-type: authorization_code
-            redirect-uri: "{baseUrl}/login/oauth2/code/keycloak"
+        access-token-uri: http://192.168.49.2:30240/realms/ambulance-service/protocol/openid-connect/token
+        client-id: profile
+        scope: openid
+        user-authorization-uri: http://192.168.49.2:30240/realms/ambulance-service/protocol/openid-connect/auth
+  cloud:
+    gateway:
+      default-filters:
+          - TokenRelay
+      routes:
+          - id: appeal-service
+            uri: http://127.0.0.1:8080/appeal-service
+            predicates:
+              - Path=/appeal/**
+            filters:
+              - StripPrefix=1
+          - id: nurse-service
+            uri: http://127.0.0.1:8080/nurse-service
+            predicates:
+              - Path=/nurse/**
+          - id: doctor-service
+            uri: http://127.0.0.1:8080/doctor-service
+            predicates:
+              - Path=/doctor/**
