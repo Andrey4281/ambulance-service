@@ -8,19 +8,24 @@ import java.util.*
  */
 data class CreatingExaminationEvent(
         /**
+         * Идентификатор обращения пациента
+         */
+        var appealId: String,
+        /**
          * Идентификатор листа осмотра пациента
          */
-        var examinationId: Long,
+        var examinationId: String,
         /**
          * Идентификатор больницы где необходимо провести анализы и лечение
          */
-        var hospitalId: Long?,
+        var hospitalId: String,
         /**
          * Список идентификаторов видов анализов, необходимых для лечения пациента
          */
-        var investigationKindIds: List<Long> = Collections.emptyList(),
+        var investigationKindIds: List<String> = Collections.emptyList(),
         /**
          * Список необходимых видов лечения для пациента
          */
-        var treatmentKindIds: List<Long> = Collections.emptyList(), override var eventId: String
+        var treatmentKindIds: List<String> = Collections.emptyList(),
+        override var eventId: String
 ): BaseEvent(eventId)

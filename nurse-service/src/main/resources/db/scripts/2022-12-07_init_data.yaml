@@ -1,0 +1,130 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 1
+      author: asemenov
+      changes:
+        - insert:
+            schema: public
+            tableName: nurse
+            columns:
+              - column:
+                  name: id
+                  value: "0ffabe6a-7658-11ed-a1eb-0242ac120002"
+              - column:
+                  name: last_name
+                  value: "Semenova"
+              - column:
+                  name: first_name
+                  value: "Olga"
+              - column:
+                  name: patronymic_name
+                  value: "Andreevna"
+              - column:
+                  name: hospital_id
+                  value: "6c5cbd72-6da0-11ed-a1eb-0242ac120002"
+              - column:
+                  name: user_id
+                  value: "40c3159c-7658-11ed-a1eb-0242ac120002"
+        - insert:
+            schema: public
+            tableName: nurse
+            columns:
+              - column:
+                  name: id
+                  value: "60bdf060-7658-11ed-a1eb-0242ac120002"
+              - column:
+                  name: last_name
+                  value: "Nikitina"
+              - column:
+                  name: first_name
+                  value: "Jna"
+              - column:
+                  name: patronymic_name
+                  value: "Victorovna"
+              - column:
+                  name: hospital_id
+                  value: "6c5cbd72-6da0-11ed-a1eb-0242ac120002"
+              - column:
+                  name: user_id
+                  value: "a56a8994-7658-11ed-a1eb-0242ac120002"
+        - insert:
+            schema: public
+            tableName: investigation_kind
+            columns:
+              - column:
+                  name: id
+                  value: "d32276bc-7658-11ed-a1eb-0242ac120002"
+              - column:
+                  name: name
+                  value: "Analysis of blood"
+        - insert:
+            schema: public
+            tableName: investigation_kind
+            columns:
+              - column:
+                  name: id
+                  value: "f73c0d10-7658-11ed-a1eb-0242ac120002"
+              - column:
+                  name: name
+                  value: "Analysis of urine"
+        - insert:
+            schema: public
+            tableName: treatment_kind
+            columns:
+              - column:
+                  name: id
+                  value: "56e87ea6-7659-11ed-a1eb-0242ac120002"
+              - column:
+                  name: name
+                  value: "Injection"
+        - insert:
+            schema: public
+            tableName: treatment_kind
+            columns:
+              - column:
+                  name: id
+                  value: "64219760-7659-11ed-a1eb-0242ac120002"
+              - column:
+                  name: name
+                  value: "Tablet"
+        - insert:
+            schema: public
+            tableName: nurse_investigation_kind_relation
+            columns:
+              - column:
+                  name: nurse_id
+                  value: "0ffabe6a-7658-11ed-a1eb-0242ac120002"
+              - column:
+                  name: investigation_kind_id
+                  value: "d32276bc-7658-11ed-a1eb-0242ac120002"
+        - insert:
+            schema: public
+            tableName: nurse_investigation_kind_relation
+            columns:
+              - column:
+                  name: nurse_id
+                  value: "60bdf060-7658-11ed-a1eb-0242ac120002"
+              - column:
+                  name: investigation_kind_id
+                  value: "f73c0d10-7658-11ed-a1eb-0242ac120002"
+        - insert:
+            schema: public
+            tableName: nurse_treatment_kind_relation
+            columns:
+              - column:
+                  name: nurse_id
+                  value: "60bdf060-7658-11ed-a1eb-0242ac120002"
+              - column:
+                  name: treatment_kind_id
+                  value: "64219760-7659-11ed-a1eb-0242ac120002"
+        - insert:
+            schema: public
+            tableName: nurse_treatment_kind_relation
+            columns:
+              - column:
+                  name: nurse_id
+                  value: "0ffabe6a-7658-11ed-a1eb-0242ac120002"
+              - column:
+                  name: treatment_kind_id
+                  value: "56e87ea6-7659-11ed-a1eb-0242ac120002"

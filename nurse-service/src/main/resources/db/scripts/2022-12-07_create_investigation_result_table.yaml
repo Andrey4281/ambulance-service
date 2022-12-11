@@ -1,0 +1,49 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 1
+      author: asemenov
+      changes:
+        - createTable:
+            schema: public
+            tableName: investigation_result
+            columns:
+              - column:
+                  name: id
+                  type: varchar(100)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: examination_id
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: appeal_id
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: file_path
+                  type: varchar(256)
+              - column:
+                  name: investigation_kind_id
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_investigation_result_investigation_kind_id
+                    references: investigation_kind(id)
+              - column:
+                  name: is_executed
+                  type: boolean
+                  defaultValue: false
+                  constraints:
+                    nullable: false
+              - column:
+                  name: nurse_id
+                  type: varchar(100)
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_investigation_result_nurse_id
+                    references: nurse(id)

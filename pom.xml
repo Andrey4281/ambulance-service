@@ -12,6 +12,7 @@
         <module>ambulance-core</module>
         <module>appeal-service</module>
         <module>doctor-service</module>
+        <module>nurse-service</module>
         <module>gateway</module>
     </modules>
 

@@ -3,12 +3,14 @@ package ru.ambulance.broker.events.outbox
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.PersistenceConstructor
 import org.springframework.data.domain.Persistable
+import org.springframework.data.relational.core.mapping.Table
 
 //TODO https://stackoverflow.com/questions/65528934/spring-data-jdbc-kotlin-support-required-property-not-found-for-class
 /**
  * Базовая сущность для сохранения в БД событий для реализации транзакционного обмена сообщениями.
  * Паттерн outbox
  */
+@Table("outbox_event")
 data class OutboxEvent(
 
         @Id var eventId: String?,

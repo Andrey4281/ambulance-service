@@ -5,15 +5,16 @@ import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
 import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
+import ru.ambulance.appeal.broker.outbox.AppealMessageServiceImpl
 import ru.ambulance.appeal.dao.AppealRepository
 import ru.ambulance.appeal.model.entity.Appeal
+import ru.ambulance.appeal.model.exceptions.AppealDoesNotExistException
 import ru.ambulance.appeal.model.mapper.toCreatingAppealEvent
 import ru.ambulance.appeal.model.rdto.CreateAppealRdto
 import ru.ambulance.appeal.service.AppealService
 import ru.ambulance.appeal.service.HospitalRoomService
 import ru.ambulance.appeal.service.PatientService
-import ru.ambulance.broker.events.appeal.CreatingAppealEvent
-import ru.ambulance.broker.service.MessageService
+import ru.ambulance.enums.AppealStatus
 import ru.ambulance.enums.HospitalRoomType
 import ru.ambulance.enums.PatientGender
 import ru.ambulance.enums.PatientState
@@ -24,7 +25,7 @@ import java.util.*
 class AppealServiceImpl(private val appealRepository: AppealRepository,
                         private val hospitalRoomService: HospitalRoomService,
                         private val patientService: PatientService,
-                        private val appealMessageService: MessageService<CreatingAppealEvent>) : AppealService {
+                        private val appealMessageService: AppealMessageServiceImpl) : AppealService {
 
     @Value("\${kafka.topics.appealRequestTopic}")
     private val appealRequestTopic: String = "appealRequestTopic"
@@ -33,7 +34,8 @@ class AppealServiceImpl(private val appealRepository: AppealRepository,
 
     @Transactional
     override fun createNewAppeal(createAppealRdto: CreateAppealRdto): Mono<String> {
-        val appeal = Appeal(appealId = UUID.randomUUID().toString(), authorId = createAppealRdto.authorId,
+        val appealId: String = UUID.randomUUID().toString()
+        val appeal = Appeal(appealId = appealId, authorId = createAppealRdto.authorId,
                 description = createAppealRdto.description, primaryPatientStatus = createAppealRdto.primaryPatientStatus.name,
                 patientId = createAppealRdto.patientId, primaryRequiredDoctor = createAppealRdto.primaryRequiredDoctor.name,
                 hospitalId = createAppealRdto.hospitalId)
@@ -66,10 +68,25 @@ class AppealServiceImpl(private val appealRepository: AppealRepository,
             appeal.currentCabinetNumber = it
             appealRepository.save(appeal)
         }.map { it.toCreatingAppealEvent() }.flatMap { appealMessageService.sendMessage(null, appealRequestTopic, it) }
-                .map { it.eventId }
+                .map { appealId }
     }
 
     override fun save(appeal: Appeal): Mono<Appeal> = appealRepository.save(appeal)
 
     override fun showAppealList(appealStatues: List<String>?, appealIds: List<String>?, doctorId: String?): Flux<Appeal> = appealRepository.showAppealList(appealStatues, appealIds, doctorId)
+
+    override fun updateAppealStatus(doctorId: String,
+                                    appealId: String,
+                                    appealStatus: AppealStatus): Mono<String> {
+
+        return appealRepository.findFirstByAppealIdAndCurrentDoctorId(appealId = appealId, currentDoctorId = doctorId).flatMap {
+            if (it == null) {
+                Mono.error(AppealDoesNotExistException("Appeal with does not exist"))
+            } else {
+                it.isNewObject = false
+                it.appealStatus = appealStatus.name
+                appealRepository.save(it)
+            }
+        }.map { it.appealId }
+    }
 }

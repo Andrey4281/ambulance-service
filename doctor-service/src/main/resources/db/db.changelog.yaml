@@ -5,11 +5,7 @@ databaseChangeLog:
       file: db/scripts/2022-12-01_create_doctor_shift_table.yaml
   - include:
       file: db/scripts/2022-12-01_create_examination_table.yaml
-#  - include: Вынести в nurse-service
-#      file: db/scripts/2022-12-01_create_investigation_kind_table.yaml
   - include:
-      file: db/scripts/2022-12-01_create_investigation_assignment_table.yaml
-#  - include: Вынести в nurse-service
-#      file: db/scripts/2022-12-01_create_treatment_kind_table.yaml
+      file: db/scripts/2022-12-03_create_outbox_table.yaml
   - include:
-      file: db/scripts/2022-12-01_create_treatment_assignment_table.yaml
+      file: db/scripts/2022-12-04_init_data.yaml

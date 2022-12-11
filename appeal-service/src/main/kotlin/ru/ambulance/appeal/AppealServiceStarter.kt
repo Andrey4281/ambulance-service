@@ -1,5 +1,7 @@
 package ru.ambulance.appeal
 
+import io.swagger.v3.oas.annotations.OpenAPIDefinition
+import io.swagger.v3.oas.annotations.info.Info
 import org.springframework.boot.autoconfigure.SpringBootApplication
 import org.springframework.boot.runApplication
 import org.springframework.scheduling.annotation.EnableScheduling
@@ -17,6 +19,7 @@ import org.springframework.web.reactive.config.EnableWebFlux
 @EnableWebFlux
 @EnableTransactionManagement
 @EnableScheduling
+@OpenAPIDefinition(info = Info(title = "Swagger Appeal Service", version = "1.0", description = "Documentation APIs v1.0"))
 class AppealServiceStarter
 
 fun main(args: Array<String>) {

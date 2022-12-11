@@ -19,11 +19,7 @@ enum class AppealStatus {
     /**
      * Пациент сдает анализы
      */
-    INVESTIGATION,
-    /**
-     * Пациент проходит лечение
-     */
-    TREATMENT,
+    INVESTIGATION_TREATMENT,
     /**
      * Доктор готов для вынесения вердикта пациенту
      */
@@ -41,7 +37,11 @@ enum class AppealStatus {
      */
     REJECTED_FROM_GOSPITALIZATION,
     /**
-     * Обращение упало с ошибкой
+     * Обращение упало с системной ошибкой
      */
-    ERROR
+    ERROR,
+    /**
+     * Обращение упало с ошибкой по причине недоступности врачей
+     */
+    UNAVAILABLE_DOCTOR
 }
