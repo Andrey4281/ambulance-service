@@ -9,5 +9,5 @@ import ru.ambulance.nurseservice.service.InvestigationResultService
 @Service
 class InvestigationResultServiceImpl(private val investigationResultRepository: InvestigationResultRepository)
     : InvestigationResultService {
-    override fun save(investigationResult: InvestigationResult): Mono<InvestigationResult> = investigationResultRepository.save(investigationResult)
+    override fun insert(investigationResult: InvestigationResult): Mono<InvestigationResult> = investigationResultRepository.save(investigationResult)
 }

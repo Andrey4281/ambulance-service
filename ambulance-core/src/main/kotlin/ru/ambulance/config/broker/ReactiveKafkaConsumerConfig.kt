@@ -57,9 +57,13 @@ abstract class ReactiveKafkaConsumer<T : BaseEvent, D : Any> {
                         .receiveAutoAck()
                         .doOnNext { log.info("topic=${it.topic()} key=${it.key()} value=${it.value()} offset=${it.offset()}") }
                         .flatMap {
-                            val consumerRecord = it
-                            getSuccessHandler(objectMapper.readValue(it.value(), getEventClass()))
-                                    .onErrorResume { getErrorHandler(consumerRecord, it).then(Mono.just(getErrorObject()))}
+                            try {
+                                val consumerRecord = it
+                                val event = objectMapper.readValue(it.value(), getEventClass())
+                                getSuccessHandler(event).onErrorResume { getErrorHandler(consumerRecord, it).then(Mono.just(getErrorObject()))}
+                            } catch (e: Exception) {
+                                getErrorHandler(it, e)
+                            }
                         }
                         .subscribe()
             }

@@ -9,7 +9,6 @@ import ru.ambulance.doctorservice.model.entity.Doctor
 
 @Repository
 interface DoctorRepository : ReactiveCrudRepository<Doctor, String> {
-
     @Query("SELECT d.id\n" +
             "FROM doctor d INNER JOIN doctor_shift ds on d.id = ds.doctor_id\n" +
             "WHERE ds.is_active=true AND d.hospital_id = :hospitalId AND d.specialization = :specialization\n" +

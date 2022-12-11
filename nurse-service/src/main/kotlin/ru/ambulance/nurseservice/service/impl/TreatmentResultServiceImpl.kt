@@ -8,5 +8,5 @@ import ru.ambulance.nurseservice.service.TreatmentResultService
 
 @Service
 class TreatmentResultServiceImpl(private val treatmentResultRepository: TreatmentResultRepository) : TreatmentResultService {
-    override fun save(treatmentResult: TreatmentResult): Mono<TreatmentResult> = treatmentResultRepository.save(treatmentResult)
+    override fun insert(treatmentResult: TreatmentResult): Mono<TreatmentResult> = treatmentResultRepository.save(treatmentResult)
 }

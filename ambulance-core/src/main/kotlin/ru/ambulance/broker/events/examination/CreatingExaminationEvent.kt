@@ -18,7 +18,7 @@ data class CreatingExaminationEvent(
         /**
          * Идентификатор больницы где необходимо провести анализы и лечение
          */
-        var hospitalId: String?,
+        var hospitalId: String,
         /**
          * Список идентификаторов видов анализов, необходимых для лечения пациента
          */
