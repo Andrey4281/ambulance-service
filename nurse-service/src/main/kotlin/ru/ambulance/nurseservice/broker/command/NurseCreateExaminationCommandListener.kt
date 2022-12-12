@@ -46,8 +46,7 @@ class NurseCreateExaminationCommandListener(private val nurseService: NurseServi
     override fun getSuccessHandler(value: CreatingExaminationEvent): Mono<OutboxEvent> {
         var investigationFlux = Flux.empty<Persistable<String>>()
         var treatmentFlux = Flux.empty<Persistable<String>>()
-        val investigationResultCountMap: MutableMap<String, AtomicInteger> = ConcurrentHashMap()
-        val treatmentResultCountMap: MutableMap<String, AtomicInteger> = ConcurrentHashMap()
+        val procedureCountMap: MutableMap<String, org.springframework.data.util.Pair<AtomicInteger, AtomicInteger>> = ConcurrentHashMap()
 
         if (value.investigationKindIds.isNotEmpty()) {
             investigationFlux = Flux.fromIterable(value.investigationKindIds).flatMap {
@@ -58,8 +57,9 @@ class NurseCreateExaminationCommandListener(private val nurseService: NurseServi
                         investigationKindId = it.treatment!!, nurseId = it.id, filePath = null))
             }.flatMap {
                 if (it.nurseId != null) {
-                    investigationResultCountMap.putIfAbsent(it.nurseId, AtomicInteger(0))
-                    investigationResultCountMap[it.nurseId]?.incrementAndGet()
+                    procedureCountMap.putIfAbsent(it.nurseId, org.springframework.data.util.Pair.of(AtomicInteger(0),
+                            AtomicInteger(0)))
+                    procedureCountMap[it.nurseId]?.first?.incrementAndGet()
                 }
                 Mono.just(it)
             }
@@ -74,31 +74,26 @@ class NurseCreateExaminationCommandListener(private val nurseService: NurseServi
                         treatmentKindId = it.treatment!!, nurseId = it.id))
             }.flatMap {
                 if (it.nurseId != null) {
-                    treatmentResultCountMap.putIfAbsent(it.nurseId, AtomicInteger(0))
-                    treatmentResultCountMap[it.nurseId]?.incrementAndGet()
+                    procedureCountMap.putIfAbsent(it.nurseId, org.springframework.data.util.Pair.of(AtomicInteger(0),
+                            AtomicInteger(0)))
+                    procedureCountMap[it.nurseId]?.second?.incrementAndGet()
                 }
                 Mono.just(it)
             }
         }
 
-        val investigationCountFlux = Flux.fromIterable(investigationResultCountMap.keys)
+        val procedureCountFlux = Flux.fromIterable(procedureCountMap.keys)
                 .flatMap { nurseShiftService.findFirstByNurseIdAndIsActiveTrue(it) }
                 .flatMap {
-                    it.activeInvestigationCount = it.activeInvestigationCount + investigationResultCountMap[it.nurseId]!!.get()
-                    it.totalInvestigationCount = it.totalInvestigationCount + investigationResultCountMap[it.nurseId]!!.get()
-                    nurseShiftService.updateNurseShift(it)
-                }.map { it.nurseShiftId }
-
-        val treatmentCountFlux = Flux.fromIterable(treatmentResultCountMap.keys)
-                .flatMap { nurseShiftService.findFirstByNurseIdAndIsActiveTrue(it) }
-                .flatMap {
-                    it.activeTreatmentCount = it.activeTreatmentCount + treatmentResultCountMap[it.nurseId]!!.get()
-                    it.totalTreatmentCount = it.totalTreatmentCount + treatmentResultCountMap[it.nurseId]!!.get()
+                    it.activeInvestigationCount = it.activeInvestigationCount + procedureCountMap[it.nurseId]!!.first.get()
+                    it.totalInvestigationCount = it.totalInvestigationCount + procedureCountMap[it.nurseId]!!.first.get()
+                    it.activeTreatmentCount = it.activeTreatmentCount + procedureCountMap[it.nurseId]!!.second.get()
+                    it.totalTreatmentCount = it.totalTreatmentCount + procedureCountMap[it.nurseId]!!.second.get()
                     nurseShiftService.updateNurseShift(it)
                 }.map { it.nurseShiftId }
 
         return investigationFlux.mergeWith(treatmentFlux).collectList()
-                .flatMap { investigationCountFlux.mergeWith(treatmentCountFlux).collectList() }
+                .flatMap { procedureCountFlux.collectList() }
                 .flatMap { nurseMessageService.sendMessage(null, appealCommandTopic, UpdateAppealEvent(appealId = value.appealId,
                         appealStatus = AppealStatus.INVESTIGATION_TREATMENT,
                         eventId = UUID.randomUUID().toString())).`as` { transactionalOperator.transactional(it) }
