@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.kafka.KafkaProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.transaction.reactive.TransactionalOperator
 import reactor.core.publisher.Mono
 import ru.ambulance.broker.events.appeal.CreatingAppealEvent
 import ru.ambulance.broker.events.appeal.DoctorResponseOnCreatingAppealEvent
@@ -37,10 +38,12 @@ class CreatingAppealSagaAppealRequestListener : AbstractDoctorServiceListener<Cr
     @Autowired
     private lateinit var doctorMessageService: DoctorMessageServiceImpl
 
+    @Autowired
+    private lateinit var  transactionalOperator: TransactionalOperator
+
     override fun getTopic(): String = appealRequestTopic
 
     //TODO asemenov подумать над оптимистик лок для shift - тк инкремент идет
-    @Transactional
     override fun getSuccessHandler(creatingAppealEvent: CreatingAppealEvent): Mono<OutboxEvent> {
         return doctorService.findRequiredDoctorWithMinActiveAppeal(hospitalId = creatingAppealEvent.hospitalId,
                 specialization = creatingAppealEvent.primaryRequiredDoctor.name).filter(Objects::nonNull).flatMap {
@@ -54,7 +57,7 @@ class CreatingAppealSagaAppealRequestListener : AbstractDoctorServiceListener<Cr
                     eventId = UUID.randomUUID().toString(), appealId = creatingAppealEvent.appealId)
         }.switchIfEmpty(Mono.just(DoctorResponseOnCreatingAppealEvent(appealStatus = AppealStatus.UNAVAILABLE_DOCTOR,
                 isSuccess = false, eventId = UUID.randomUUID().toString(), appealId = creatingAppealEvent.appealId, doctorId = null)))
-                .flatMap { doctorMessageService.sendMessage(null, appealResponseTopic, it) }
+                .flatMap { doctorMessageService.sendMessage(null, appealResponseTopic, it) }.`as` { transactionalOperator.transactional(it) }
     }
 
     override fun getEventClass(): Class<CreatingAppealEvent> = CreatingAppealEvent::class.java

@@ -8,6 +8,7 @@ import org.springframework.boot.autoconfigure.kafka.KafkaProperties
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.transaction.annotation.Transactional
+import org.springframework.transaction.reactive.TransactionalOperator
 import reactor.core.publisher.Mono
 import ru.ambulance.appeal.broker.AbstractAppealServiceListener
 import ru.ambulance.appeal.model.entity.Appeal
@@ -29,9 +30,11 @@ class CreatingAppealSagaDoctorResponseListener : AbstractAppealServiceListener<D
     @Autowired
     private lateinit var appealService: AppealService;
 
+    @Autowired
+    private lateinit var  transactionalOperator: TransactionalOperator
+
     override fun getTopic(): String = appealResponseTopic
 
-    @Transactional
     override fun getSuccessHandler(value: DoctorResponseOnCreatingAppealEvent): Mono<Appeal> {
         return value.appealId.let { appealService.findById(it) }.flatMap {
             it.isNewObject = false
@@ -41,7 +44,7 @@ class CreatingAppealSagaDoctorResponseListener : AbstractAppealServiceListener<D
             } else {
                 it.appealStatus = value.appealStatus.name
             }
-            appealService.save(it)
+            appealService.save(it).`as` { transactionalOperator.transactional(it) }
         }
     }
 

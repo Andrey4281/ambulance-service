@@ -28,4 +28,12 @@ class NurseShiftServiceImpl(private val nurseShiftRepository: NurseShiftReposito
     }
 
     override fun endShift(nurseId: String): Mono<Void> = nurseShiftRepository.endShift(nurseId)
+
+    override fun findFirstByNurseIdAndIsActiveTrue(nurseId: String): Mono<NurseShift> =
+            nurseShiftRepository.findFirstByNurseIdAndIsActiveTrue(nurseId)
+
+    override fun updateNurseShift(nurseShift: NurseShift): Mono<NurseShift> {
+        nurseShift.isNewObject = false
+        return nurseShiftRepository.save(nurseShift)
+    }
 }

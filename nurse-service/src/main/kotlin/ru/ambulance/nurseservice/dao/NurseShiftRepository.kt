@@ -16,4 +16,6 @@ interface NurseShiftRepository : ReactiveCrudRepository<NurseShift, String> {
     @Modifying
     @Query("UPDATE nurse_shift SET is_active=false WHERE nurse_id = :nurseId")
     fun endShift(@Param("nurseId") nurseId: String): Mono<Void>
+
+    fun findFirstByNurseIdAndIsActiveTrue(nurseId: String): Mono<NurseShift>
 }
