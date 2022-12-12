@@ -5,4 +5,4 @@ import org.springframework.stereotype.Repository
 import ru.ambulance.nurseservice.model.entity.InvestigationResult
 
 @Repository
-interface InvestigationResultRepository : ReactiveCrudRepository<InvestigationResult, String>
+interface InvestigationResultRepository : ReactiveCrudRepository<InvestigationResult, String>, InvestigationResultCustomRepository

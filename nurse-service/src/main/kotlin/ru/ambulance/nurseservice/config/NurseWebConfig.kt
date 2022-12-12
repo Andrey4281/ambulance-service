@@ -43,5 +43,15 @@ class NurseWebConfig : WebConfig() {
                     .beanClass(TreatmentResultService::class.java)
                     .beanMethod("updateTreatmentResult")
         }
+        GET("/nurse/investigationResultList", accept(MediaType.APPLICATION_JSON), nurseHandler::showInvestigationResultList) {
+            it.operationId("showInvestigationResultList")
+                    .beanClass(InvestigationResultService::class.java)
+                    .beanMethod("showInvestigationResultList")
+        }
+        GET("/nurse/treatmentResultList", accept(MediaType.APPLICATION_JSON), nurseHandler::showTreatmentResultList) {
+            it.operationId("showTreatmentResultList")
+                    .beanClass(TreatmentResultService::class.java)
+                    .beanMethod("showTreatmentResultList")
+        }
     }
 }

@@ -3,12 +3,15 @@ package ru.ambulance.nurseservice.service.impl
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import ru.ambulance.broker.events.appeal.UpdateAppealEvent
 import ru.ambulance.enums.AppealStatus
 import ru.ambulance.nurseservice.broker.outbox.NurseMessageServiceImpl
 import ru.ambulance.nurseservice.dao.TreatmentResultRepository
+import ru.ambulance.nurseservice.model.dto.TreatmentResultDto
 import ru.ambulance.nurseservice.model.entity.TreatmentResult
+import ru.ambulance.nurseservice.model.mapper.toDto
 import ru.ambulance.nurseservice.model.rdto.TreatmentResultRdto
 import ru.ambulance.nurseservice.service.NurseService
 import ru.ambulance.nurseservice.service.NurseShiftService
@@ -40,7 +43,7 @@ class TreatmentResultServiceImpl(private val treatmentResultRepository: Treatmen
                     it.activeTreatmentCount = it.activeTreatmentCount - 1
                     nurseShiftService.updateNurseShift(it)
                 }.flatMap {
-                    nurseService.isExistAvailableTreatmentOrInvestigation(it.nurseId)
+                    nurseService.isExistAvailableTreatmentOrInvestigation(it.nurseId, treatmentResult.appealId)
                 }.flatMap {
                     if (!it) {
                         nurseMessageService.sendMessage(null, appealCommandTopic, UpdateAppealEvent(
@@ -56,4 +59,7 @@ class TreatmentResultServiceImpl(private val treatmentResultRepository: Treatmen
             }
         }.map { treatmentResultRdto.treatmentResultId }
     }
+
+    override fun showTreatmentResultList(appealId: String?, examinationId: String?, nurseId: String?): Flux<TreatmentResultDto> =
+            treatmentResultRepository.showProcedureResultList(appealId = appealId, examinationId = examinationId, nurseId = nurseId).map { it.toDto() }
 }

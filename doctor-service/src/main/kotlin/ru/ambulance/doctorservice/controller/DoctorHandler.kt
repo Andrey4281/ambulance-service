@@ -7,6 +7,7 @@ import org.springframework.web.reactive.function.server.ServerRequest
 import org.springframework.web.reactive.function.server.ServerResponse
 import org.springframework.web.reactive.function.server.ServerResponse.ok
 import reactor.core.publisher.Mono
+import ru.ambulance.doctorservice.model.rdto.CloseAppealRdto
 import ru.ambulance.doctorservice.model.rdto.ExaminationRdto
 import ru.ambulance.doctorservice.service.DoctorShiftService
 import ru.ambulance.doctorservice.service.ExaminationService
@@ -16,12 +17,12 @@ import ru.ambulance.doctorservice.service.ExaminationService
 class DoctorHandler(private val doctorShiftService: DoctorShiftService,
                     private val examinationService: ExaminationService) {
 
-    fun beginShift(request: ServerRequest) : Mono<ServerResponse> {
+    fun beginShift(request: ServerRequest): Mono<ServerResponse> {
         val doctorId = request.pathVariable("doctorId")
         //TODO asemenov tZone плюс перезатирается в queryParam
         return ok().contentType(MediaType.APPLICATION_JSON).body(doctorShiftService.beginShift(doctorId = doctorId,
                 tZone = request.queryParams().getFirst("tZone")
-                ?: "UTC+3"),
+                        ?: "UTC+3"),
                 String::class.java)
     }
 
@@ -37,6 +38,14 @@ class DoctorHandler(private val doctorShiftService: DoctorShiftService,
         return ok()
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromPublisher(createExaminationRdto.flatMap(examinationService::createNewExamination),
+                        String::class.java))
+    }
+
+    fun closeAppeal(request: ServerRequest): Mono<ServerResponse> {
+        val closeAppealRdto: Mono<CloseAppealRdto> = request.bodyToMono(CloseAppealRdto::class.java)
+        return ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromPublisher(closeAppealRdto.flatMap(doctorShiftService::closeAppeal),
                         String::class.java))
     }
 }

@@ -2,6 +2,7 @@ package ru.ambulance.doctorservice.service
 
 import reactor.core.publisher.Mono
 import ru.ambulance.doctorservice.model.entity.DoctorShift
+import ru.ambulance.doctorservice.model.rdto.CloseAppealRdto
 
 interface DoctorShiftService {
 
@@ -12,4 +13,6 @@ interface DoctorShiftService {
     fun findActiveShiftByDoctorId(doctorId: String): Mono<DoctorShift>
 
     fun updateShift(doctorShift: DoctorShift): Mono<DoctorShift>
+
+    fun closeAppeal(closeAppealRdto: CloseAppealRdto): Mono<String>
 }

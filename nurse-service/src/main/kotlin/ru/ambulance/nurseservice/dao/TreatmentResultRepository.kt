@@ -5,5 +5,4 @@ import org.springframework.stereotype.Repository
 import ru.ambulance.nurseservice.model.entity.TreatmentResult
 
 @Repository
-interface TreatmentResultRepository : ReactiveCrudRepository<TreatmentResult, String> {
-}
+interface TreatmentResultRepository : ReactiveCrudRepository<TreatmentResult, String>, TreatmentResultCustomRepository

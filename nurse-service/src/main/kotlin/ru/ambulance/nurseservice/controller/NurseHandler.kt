@@ -7,6 +7,8 @@ import org.springframework.web.reactive.function.server.ServerRequest
 import org.springframework.web.reactive.function.server.ServerResponse
 import org.springframework.web.reactive.function.server.ServerResponse.ok
 import reactor.core.publisher.Mono
+import ru.ambulance.nurseservice.model.dto.InvestigationResultDto
+import ru.ambulance.nurseservice.model.dto.TreatmentResultDto
 import ru.ambulance.nurseservice.model.rdto.InvestigationResultRdto
 import ru.ambulance.nurseservice.model.rdto.TreatmentResultRdto
 import ru.ambulance.nurseservice.service.InvestigationResultService
@@ -48,5 +50,25 @@ class NurseHandler(private val nurseShiftService: NurseShiftService,
                 .contentType(MediaType.APPLICATION_JSON)
                 .body(BodyInserters.fromPublisher(treatmentResultRdto.flatMap(treatmentResultService::updateTreatmentResult),
                         String::class.java))
+    }
+
+    fun showInvestigationResultList(request: ServerRequest): Mono<ServerResponse> {
+        val params = request.queryParams()
+        return ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromPublisher(investigationResultService.showInvestigationResultList(
+                        appealId = params.getFirst("appealId"), examinationId = params.getFirst("examinationId"),
+                        nurseId = params.getFirst("nurseId")),
+                        InvestigationResultDto::class.java))
+    }
+
+    fun showTreatmentResultList(request: ServerRequest): Mono<ServerResponse> {
+        val params = request.queryParams()
+        return ok()
+                .contentType(MediaType.APPLICATION_JSON)
+                .body(BodyInserters.fromPublisher(treatmentResultService.showTreatmentResultList(
+                        appealId = params.getFirst("appealId"), examinationId = params.getFirst("examinationId"),
+                        nurseId = params.getFirst("nurseId")),
+                        TreatmentResultDto::class.java))
     }
 }

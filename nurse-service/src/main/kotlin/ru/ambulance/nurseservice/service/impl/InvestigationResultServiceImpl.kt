@@ -3,12 +3,15 @@ package ru.ambulance.nurseservice.service.impl
 import org.springframework.beans.factory.annotation.Value
 import org.springframework.stereotype.Service
 import org.springframework.transaction.annotation.Transactional
+import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import ru.ambulance.broker.events.appeal.UpdateAppealEvent
 import ru.ambulance.enums.AppealStatus
 import ru.ambulance.nurseservice.broker.outbox.NurseMessageServiceImpl
 import ru.ambulance.nurseservice.dao.InvestigationResultRepository
+import ru.ambulance.nurseservice.model.dto.InvestigationResultDto
 import ru.ambulance.nurseservice.model.entity.InvestigationResult
+import ru.ambulance.nurseservice.model.mapper.toDto
 import ru.ambulance.nurseservice.model.rdto.InvestigationResultRdto
 import ru.ambulance.nurseservice.service.InvestigationResultService
 import ru.ambulance.nurseservice.service.NurseService
@@ -60,4 +63,7 @@ class InvestigationResultServiceImpl(private val investigationResultRepository: 
             }
         }.map { investigationResultRdto.investigationResultId }
     }
+
+    override fun showInvestigationResultList(appealId: String?, examinationId: String?, nurseId: String?): Flux<InvestigationResultDto> =
+            investigationResultRepository.showProcedureResultList(appealId = appealId, examinationId = examinationId, nurseId = nurseId).map { it.toDto() }
 }

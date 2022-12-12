@@ -7,9 +7,11 @@ import reactor.core.publisher.Flux
 import reactor.core.publisher.Mono
 import ru.ambulance.appeal.broker.outbox.AppealMessageServiceImpl
 import ru.ambulance.appeal.dao.AppealRepository
+import ru.ambulance.appeal.model.dto.AppealDto
 import ru.ambulance.appeal.model.entity.Appeal
 import ru.ambulance.appeal.model.exceptions.AppealDoesNotExistException
 import ru.ambulance.appeal.model.mapper.toCreatingAppealEvent
+import ru.ambulance.appeal.model.mapper.toDto
 import ru.ambulance.appeal.model.rdto.CreateAppealRdto
 import ru.ambulance.appeal.service.AppealService
 import ru.ambulance.appeal.service.HospitalRoomService
@@ -73,7 +75,7 @@ class AppealServiceImpl(private val appealRepository: AppealRepository,
 
     override fun save(appeal: Appeal): Mono<Appeal> = appealRepository.save(appeal)
 
-    override fun showAppealList(appealStatues: List<String>?, appealIds: List<String>?, doctorId: String?): Flux<Appeal> = appealRepository.showAppealList(appealStatues, appealIds, doctorId)
+    override fun showAppealList(appealStatues: List<String>?, appealIds: List<String>?, doctorId: String?): Flux<AppealDto> = appealRepository.showAppealList(appealStatues, appealIds, doctorId).map { it.toDto() }
 
     override fun updateAppealStatus(doctorId: String,
                                     appealId: String,

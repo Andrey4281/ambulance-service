@@ -8,7 +8,6 @@ import org.springframework.web.reactive.function.server.ServerResponse
 import org.springframework.web.reactive.function.server.ServerResponse.ok
 import reactor.core.publisher.Mono
 import ru.ambulance.appeal.model.dto.AppealDto
-import ru.ambulance.appeal.model.mapper.toDto
 import ru.ambulance.appeal.model.rdto.CreateAppealRdto
 import ru.ambulance.appeal.service.AppealService
 import ru.ambulance.enums.AppealStatus
@@ -28,7 +27,7 @@ class AppealHandler(val appealService: AppealService) {
                 return ok()
                         .contentType(MediaType.APPLICATION_JSON)
                         .body(fromPublisher(appealService.showAppealList(params.getFirst("appealStatues")?.split(","),
-                                params.getFirst("appealIds")?.split(","), params.getFirst("doctorId")).map { it.toDto() },
+                                params.getFirst("appealIds")?.split(","), params.getFirst("doctorId")),
                                 AppealDto::class.java))
         }
 

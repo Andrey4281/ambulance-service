@@ -13,11 +13,11 @@ import ru.ambulance.doctorservice.service.DoctorShiftService
 import ru.ambulance.doctorservice.service.ExaminationService
 
 @Configuration
-class DoctorWebConfig: WebConfig() {
+class DoctorWebConfig : WebConfig() {
 
     @Bean
     @FlowPreview
-    fun doctorRouter(doctorHandler: DoctorHandler) : RouterFunction<ServerResponse> = docRouter {
+    fun doctorRouter(doctorHandler: DoctorHandler): RouterFunction<ServerResponse> = docRouter {
         POST("/doctor/beginShift/{doctorId}", accept(MediaType.APPLICATION_JSON), doctorHandler::beginShift)
         {
             it.operationId("beginShift")
@@ -35,6 +35,12 @@ class DoctorWebConfig: WebConfig() {
             it.operationId("createNewExamination")
                     .beanClass(ExaminationService::class.java)
                     .beanMethod("createNewExamination")
+        }
+        PUT("/doctor/closeAppeal", accept(MediaType.APPLICATION_JSON), doctorHandler::closeAppeal)
+        {
+            it.operationId("closeAppeal")
+                    .beanClass(DoctorShiftService::class.java)
+                    .beanMethod("closeAppeal")
         }
     }
 }
