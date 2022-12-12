@@ -26,12 +26,12 @@ interface NurseRepository : ReactiveCrudRepository<Nurse, String> {
     fun findRequiredNurseWithMinActiveTreatment(@Param("hospitalId") hospitalId: String,
                                                 @Param("treatmentKindId") treatmentKindId: String): Mono<ProcedureKindWithNurse>
 
-    @Query("SELECT EXISTS (SELECT n.id\n" +
-            "               FROM nurse n\n" +
-            "                        INNER JOIN investigation_result ir on (n.id = ir.nurse_id)\n" +
-            "                        INNER JOIN treatment_result tr on (n.id = tr.nurse_id)\n" +
-            "               WHERE n.id = :nurseId AND (ir.is_executed = false OR tr.is_executed = false)\n" +
-            "                 AND ir.appeal_id = :appealId\n" +
-            "                 AND tr.appeal_id = :appealId)")
-    fun isExistAvailableTreatmentOrInvestigation(@Param("nurseId") nurseId: String, @Param("appealId") appealId: String): Mono<Boolean>
+    @Query("SELECT EXISTS(SELECT n.id\n" +
+            "              FROM nurse n\n" +
+            "                       INNER JOIN investigation_result ir on (n.id = ir.nurse_id)\n" +
+            "                       INNER JOIN treatment_result tr on (n.id = tr.nurse_id)\n" +
+            "              WHERE (ir.is_executed = false OR tr.is_executed = false)\n" +
+            "                AND ir.appeal_id = :appealId\n" +
+            "                AND tr.appeal_id = :appealId)")
+    fun isExistAvailableTreatmentOrInvestigation(@Param("appealId") appealId: String): Mono<Boolean>
 }

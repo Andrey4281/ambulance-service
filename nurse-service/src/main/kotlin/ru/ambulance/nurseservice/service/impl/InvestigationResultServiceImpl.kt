@@ -47,7 +47,7 @@ class InvestigationResultServiceImpl(private val investigationResultRepository: 
                     it.activeInvestigationCount = it.activeInvestigationCount - 1
                     nurseShiftService.updateNurseShift(it)
                 }.flatMap {
-                    nurseService.isExistAvailableTreatmentOrInvestigation(it.nurseId, investigationResult.appealId)
+                    nurseService.isExistAvailableTreatmentOrInvestigation(investigationResult.appealId)
                 }.flatMap {
                     if (!it) {
                         nurseMessageService.sendMessage(null, appealCommandTopic, UpdateAppealEvent(

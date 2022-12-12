@@ -8,5 +8,5 @@ interface NurseService {
 
     fun findRequiredNurseWithMinActiveTreatment(hospitalId: String, treatmentKindId: String): Mono<ProcedureKindWithNurse>
 
-    fun isExistAvailableTreatmentOrInvestigation(nurseId: String,appealId: String): Mono<Boolean>
+    fun isExistAvailableTreatmentOrInvestigation(appealId: String): Mono<Boolean>
 }

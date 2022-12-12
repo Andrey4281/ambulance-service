@@ -17,6 +17,6 @@ class NurseServiceImpl(private val nurseRepository: NurseRepository) : NurseServ
             nurseRepository.findRequiredNurseWithMinActiveTreatment(hospitalId = hospitalId, treatmentKindId = treatmentKindId)
                     .switchIfEmpty(Mono.just(ProcedureKindWithNurse(id = null, treatment = treatmentKindId)))
 
-    override fun isExistAvailableTreatmentOrInvestigation(nurseId: String, appealId: String): Mono<Boolean> =
-            nurseRepository.isExistAvailableTreatmentOrInvestigation(nurseId, appealId)
+    override fun isExistAvailableTreatmentOrInvestigation(appealId: String): Mono<Boolean> =
+            nurseRepository.isExistAvailableTreatmentOrInvestigation(appealId)
 }

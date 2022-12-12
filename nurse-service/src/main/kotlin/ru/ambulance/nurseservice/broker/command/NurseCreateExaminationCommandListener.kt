@@ -24,6 +24,8 @@ import ru.ambulance.nurseservice.service.NurseService
 import ru.ambulance.nurseservice.service.NurseShiftService
 import ru.ambulance.nurseservice.service.TreatmentResultService
 import java.util.*
+import java.util.concurrent.ConcurrentHashMap
+import java.util.concurrent.atomic.AtomicInteger
 
 @Configuration
 class NurseCreateExaminationCommandListener(private val nurseService: NurseService, private val investigationResultService: InvestigationResultService, private val treatmentResultService: TreatmentResultService, private val nurseMessageService: NurseMessageServiceImpl, private val nurseShiftService: NurseShiftService) : AbstractNurseServiceListener<CreatingExaminationEvent, OutboxEvent>() {
@@ -44,6 +46,8 @@ class NurseCreateExaminationCommandListener(private val nurseService: NurseServi
     override fun getSuccessHandler(value: CreatingExaminationEvent): Mono<OutboxEvent> {
         var investigationFlux = Flux.empty<Persistable<String>>()
         var treatmentFlux = Flux.empty<Persistable<String>>()
+        val investigationResultCountMap: MutableMap<String, AtomicInteger> = ConcurrentHashMap()
+        val treatmentResultCountMap: MutableMap<String, AtomicInteger> = ConcurrentHashMap()
 
         if (value.investigationKindIds.isNotEmpty()) {
             investigationFlux = Flux.fromIterable(value.investigationKindIds).flatMap {
@@ -54,13 +58,10 @@ class NurseCreateExaminationCommandListener(private val nurseService: NurseServi
                         investigationKindId = it.treatment!!, nurseId = it.id, filePath = null))
             }.flatMap {
                 if (it.nurseId != null) {
-                    nurseShiftService.findFirstByNurseIdAndIsActiveTrue(it.nurseId).flatMap {
-                        it.activeInvestigationCount = it.activeInvestigationCount + 1
-                        nurseShiftService.updateNurseShift(it)
-                    }
-                } else {
-                    Mono.just(it)
+                    investigationResultCountMap.putIfAbsent(it.nurseId, AtomicInteger(0))
+                    investigationResultCountMap[it.nurseId]?.incrementAndGet()
                 }
+                Mono.just(it)
             }
         }
 
@@ -73,18 +74,34 @@ class NurseCreateExaminationCommandListener(private val nurseService: NurseServi
                         treatmentKindId = it.treatment!!, nurseId = it.id))
             }.flatMap {
                 if (it.nurseId != null) {
-                    nurseShiftService.findFirstByNurseIdAndIsActiveTrue(it.nurseId).flatMap {
-                        it.activeTreatmentCount = it.activeTreatmentCount + 1
-                        nurseShiftService.updateNurseShift(it)
-                    }
-                } else {
-                    Mono.just(it)
+                    treatmentResultCountMap.putIfAbsent(it.nurseId, AtomicInteger(0))
+                    treatmentResultCountMap[it.nurseId]?.incrementAndGet()
                 }
+                Mono.just(it)
             }
         }
 
-        return investigationFlux.mergeWith(treatmentFlux).collectList().flatMap {
-            nurseMessageService.sendMessage(null, appealCommandTopic, UpdateAppealEvent(appealId = value.appealId, appealStatus = AppealStatus.INVESTIGATION_TREATMENT, eventId = UUID.randomUUID().toString())).`as` { transactionalOperator.transactional(it) }
+        val investigationCountFlux = Flux.fromIterable(investigationResultCountMap.keys)
+                .flatMap { nurseShiftService.findFirstByNurseIdAndIsActiveTrue(it) }
+                .flatMap {
+                    it.activeInvestigationCount = it.activeInvestigationCount + investigationResultCountMap[it.nurseId]!!.get()
+                    it.totalInvestigationCount = it.totalInvestigationCount + investigationResultCountMap[it.nurseId]!!.get()
+                    nurseShiftService.updateNurseShift(it)
+                }.map { it.nurseShiftId }
+
+        val treatmentCountFlux = Flux.fromIterable(treatmentResultCountMap.keys)
+                .flatMap { nurseShiftService.findFirstByNurseIdAndIsActiveTrue(it) }
+                .flatMap {
+                    it.activeTreatmentCount = it.activeTreatmentCount + treatmentResultCountMap[it.nurseId]!!.get()
+                    it.totalTreatmentCount = it.totalTreatmentCount + treatmentResultCountMap[it.nurseId]!!.get()
+                    nurseShiftService.updateNurseShift(it)
+                }.map { it.nurseShiftId }
+
+        return investigationFlux.mergeWith(treatmentFlux).collectList()
+                .flatMap { investigationCountFlux.mergeWith(treatmentCountFlux).collectList() }
+                .flatMap { nurseMessageService.sendMessage(null, appealCommandTopic, UpdateAppealEvent(appealId = value.appealId,
+                        appealStatus = AppealStatus.INVESTIGATION_TREATMENT,
+                        eventId = UUID.randomUUID().toString())).`as` { transactionalOperator.transactional(it) }
         }
     }
 

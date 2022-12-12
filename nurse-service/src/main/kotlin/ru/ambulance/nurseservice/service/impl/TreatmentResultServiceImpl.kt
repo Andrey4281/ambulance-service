@@ -43,7 +43,7 @@ class TreatmentResultServiceImpl(private val treatmentResultRepository: Treatmen
                     it.activeTreatmentCount = it.activeTreatmentCount - 1
                     nurseShiftService.updateNurseShift(it)
                 }.flatMap {
-                    nurseService.isExistAvailableTreatmentOrInvestigation(it.nurseId, treatmentResult.appealId)
+                    nurseService.isExistAvailableTreatmentOrInvestigation(treatmentResult.appealId)
                 }.flatMap {
                     if (!it) {
                         nurseMessageService.sendMessage(null, appealCommandTopic, UpdateAppealEvent(
