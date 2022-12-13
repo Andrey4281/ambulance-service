@@ -1,0 +1,11 @@
+server:
+  port: 8084
+
+spring:
+  application:
+    name: gateway-service
+
+services:
+  appealService: ${APPEAL_SERVICE_URL:http://localhost:8081}
+  doctorService: ${DOCTOR_SERVICE_URL:http://localhost:8082}
+  nurseService: ${NURSE_SERVICE_URL:http://localhost:8083}
