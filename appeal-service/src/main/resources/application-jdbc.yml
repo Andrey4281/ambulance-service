@@ -1,8 +1,8 @@
 spring:
   r2dbc:
-    url: r2dbc:postgresql://${R2DS_APPEAL_DB_HOSTNAME:localhost}:${R2DS_APPEAL_DB_PORT:5434}/${R2DS_APPEAL_DB_NAME:appeal}
-    username: ${R2DS_APPEAL_DB_USERNAME:appeal}
-    password: ${R2DS_APPEAL_DB_PASSWORD:appeal}
+    url: r2dbc:postgresql://${RDS_HOSTNAME:localhost}:${RDS_PORT:5434}/${RDS_DB_NAME:appeal}
+    username: ${RDS_USERNAME:appeal}
+    password: ${RDS_PASSWORD:appeal}
     initialization-mode: always
     pool:
       name: APPEAL-SERVICE-POOL
@@ -11,7 +11,7 @@ spring:
       maxIdleTime: 30m
       validationQuery: "SELECT 1"
   liquibase:
-    url: jdbc:postgresql://${R2DS_APPEAL_DB_HOSTNAME:localhost}:${R2DS_APPEAL_DB_PORT:5434}/${R2DS_APPEAL_DB_NAME:appeal}
-    user: ${R2DS_APPEAL_DB_USERNAME:appeal}
-    password: ${R2DS_APPEAL_DB_PASSWORD:appeal}
+    url: jdbc:postgresql://${RDS_HOSTNAME:localhost}:${RDS_PORT:5434}/${RDS_DB_NAME:appeal}
+    user: ${RDS_USERNAME:appeal}
+    password: ${RDS_PASSWORD:appeal}
     change-log: classpath:/db/db.changelog.yaml

@@ -1,0 +1,36 @@
+dataBase:
+  host: "appeal-database-postgresql.appeal-db.svc.cluster.local"
+  port: "5432"
+  name: "appeal"
+  user: "appeal"
+  userpass: "appeal"
+  adminpass: "appeal"
+
+kafka:
+  host: "kafka-cluster.kafka.svc.cluster.local"
+  port: "9092"
+
+namespace: "appeal"
+serviceName: "appeal-service"
+deploymentName: "appeal-deployment"
+containerName: "appeal-container"
+configName: "appeal-config"
+secretName: "appeal-app-secrets"
+
+deploy:
+  replicasCount: 1
+  serviceLabel: appeal
+  podLabel: appeal
+  deploymentLabel: appeal
+  containerPort: 8081
+  image:
+    name: andrey4281/appeal-service
+    tag: 0.0.2
+  service:
+    type: ClusterIP
+    port:
+      number: 7081
+      name: appeal
+    metricPort:
+      number: 6081
+      name: appeal-metrics

@@ -1,0 +1,12 @@
+apiVersion: v1
+data:
+  rds-host-name: "{{ .Values.dataBase.host }}"
+  rds-port: "{{ .Values.dataBase.port }}"
+  rds-db-name: "{{ .Values.dataBase.name }}"
+  rds-user-name: "{{ .Values.dataBase.user }}"
+  kafka-hostname: "{{ .Values.kafka.host }}"
+  kafka-port: "{{ .Values.kafka.port }}"
+kind: ConfigMap
+metadata:
+  name: {{ .Values.configName }}
+  namespace: {{ .Values.namespace }}

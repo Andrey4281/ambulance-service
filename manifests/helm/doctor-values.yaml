@@ -1,0 +1,36 @@
+dataBase:
+  host: "doctor-database-postgresql.doctor-db.svc.cluster.local"
+  port: "5432"
+  name: "doctor"
+  user: "doctor"
+  userpass: "doctor"
+  adminpass: "doctor"
+
+kafka:
+  host: "kafka-cluster.kafka.svc.cluster.local"
+  port: "9092"
+
+namespace: "doctor"
+serviceName: "doctor-service"
+deploymentName: "doctor-deployment"
+containerName: "doctor-container"
+configName: "doctor-config"
+secretName: "doctor-app-secrets"
+
+deploy:
+  replicasCount: 1
+  serviceLabel: doctor
+  podLabel: doctor
+  deploymentLabel: doctor
+  containerPort: 8082
+  image:
+    name: andrey4281/doctor-service
+    tag: 0.0.2
+  service:
+    type: ClusterIP
+    port:
+      number: 7082
+      name: doctor
+    metricPort:
+      number: 6082
+      name: doctor-metrics

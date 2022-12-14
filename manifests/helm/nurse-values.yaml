@@ -1,0 +1,36 @@
+dataBase:
+  host: "nurse-database-postgresql.nurse-db.svc.cluster.local"
+  port: "5432"
+  name: "nurse"
+  user: "nurse"
+  userpass: "nurse"
+  adminpass: "nurse"
+
+kafka:
+  host: "kafka-cluster.kafka.svc.cluster.local"
+  port: "9092"
+
+namespace: "nurse"
+serviceName: "nurse-service"
+deploymentName: "nurse-deployment"
+containerName: "nurse-container"
+configName: "nurse-config"
+secretName: "nurse-app-secrets"
+
+deploy:
+  replicasCount: 1
+  serviceLabel: nurse
+  podLabel: nurse
+  deploymentLabel: nurse
+  containerPort: 8083
+  image:
+    name: andrey4281/nurse-service
+    tag: 0.0.2
+  service:
+    type: ClusterIP
+    port:
+      number: 7083
+      name: nurse
+    metricPort:
+      number: 6083
+      name: nurse-metrics

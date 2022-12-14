@@ -1,0 +1,9 @@
+apiVersion: v1
+data:
+  appeal_service_url: "http://appeal-service.appeal.svc.cluster.local:7081"
+  doctor_service_url: "http://doctor-service.doctor.svc.cluster.local:7082"
+  nurse_service_url: "http://nurse-service.nurse.svc.cluster.local:7083"
+kind: ConfigMap
+metadata:
+  name: gateway-config
+  namespace: gateway

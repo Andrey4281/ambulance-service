@@ -3,7 +3,7 @@ global:
     auth:
       username: appeal
       database: appeal
-      existingSecret: appeal-secrets
+      existingSecret: appeal-db-secrets
       secretKeys:
         userPasswordKey: psqluserpass
         adminPasswordKey: psqladminpass

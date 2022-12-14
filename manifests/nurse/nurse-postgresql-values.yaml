@@ -3,7 +3,7 @@ global:
     auth:
       username: nurse
       database: nurse
-      existingSecret: nurse-secrets
+      existingSecret: nurse-db-secrets
       secretKeys:
         userPasswordKey: psqluserpass
         adminPasswordKey: psqladminpass

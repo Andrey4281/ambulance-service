@@ -5,9 +5,9 @@ a) Сервис appeal
 В папке manifests/appeal выполнить следующие команды:
 (1) kubectl apply -f appeal-namespace.yaml
 (2) kubectl apply -f appeal-secret.yaml
-(3) helm -n appeal install appeal-database -f appeal-postgresql-values.yaml bitnami/postgresql
+(3) helm -n appeal-db install appeal-database -f appeal-postgresql-values.yaml bitnami/postgresql
 Подключение к БД:
-kubectl --namespace appeal port-forward svc/appeal-database-postgresql 5434:5432
+kubectl --namespace appeal-db port-forward svc/appeal-database-postgresql 5434:5432
 
 б) Сервис doctor
 В папке manifests/doctor выполнить следующие команды:
@@ -15,7 +15,7 @@ kubectl --namespace appeal port-forward svc/appeal-database-postgresql 5434:5432
 (2) kubectl apply -f doctor-secret.yaml
 (3) helm -n doctor install doctor-database -f doctor-postgresql-values.yaml bitnami/postgresql
 Подключение к БД:
-kubectl --namespace doctor port-forward svc/doctor-database-postgresql 5435:5432
+kubectl --namespace doctor-db port-forward svc/doctor-database-postgresql 5435:5432
 
 в) Сервис nurse
 В папке manifests/nurse выполнить следующие команды:
@@ -23,13 +23,13 @@ kubectl --namespace doctor port-forward svc/doctor-database-postgresql 5435:5432
 (2) kubectl apply -f nurse-secret.yaml
 (3) helm -n nurse install nurse-database -f nurse-postgresql-values.yaml bitnami/postgresql
 Подключение к БД:
-kubectl --namespace nurse port-forward svc/nurse-database-postgresql 5436:5432
+kubectl --namespace nurse-db port-forward svc/nurse-database-postgresql 5436:5432
 
 Установка kafka:
 (1) Откуда брать чарт
 https://bitnami.com/stack/kafka/helm
 Выполнить команду для установки:
-(2) helm -n kafka install kafka-cluster -f kafka-values.yaml bitnami/kafka
+(2) helm -n kafka install kafka-cluster bitnami/kafka
 
 Подключение к брокеру kafka из внешнего хоста:
 (1) Перед подключением необходимо выполнить команду

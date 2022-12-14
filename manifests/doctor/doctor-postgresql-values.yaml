@@ -3,7 +3,7 @@ global:
     auth:
       username: doctor
       database: doctor
-      existingSecret: doctor-secrets
+      existingSecret: doctor-db-secrets
       secretKeys:
         userPasswordKey: psqluserpass
         adminPasswordKey: psqladminpass

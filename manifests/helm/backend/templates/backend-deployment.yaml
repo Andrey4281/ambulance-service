@@ -1,0 +1,84 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ .Values.serviceName }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.deploy.serviceLabel }}
+spec:
+  type: {{ .Values.deploy.service.type }}
+  ports:
+    - port: {{ .Values.deploy.service.port.number }}
+      name: {{ .Values.deploy.service.port.name }}
+      targetPort: {{ .Values.deploy.containerPort }}
+    - port: {{ .Values.deploy.service.metricPort.number }}
+      name: {{ .Values.deploy.service.metricPort.name }}
+      protocol: TCP
+      targetPort: {{ .Values.deploy.containerPort }}
+  selector:
+    app: {{ .Values.deploy.podLabel }}
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.deploymentName }}
+  namespace: {{ .Values.namespace }}
+  labels:
+    app: {{ .Values.deploy.deploymentLabel }}
+spec:
+  selector:
+    matchLabels:
+      app: {{ .Values.deploy.podLabel }}
+  replicas: {{ .Values.deploy.replicasCount }}
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxSurge: 1
+      maxUnavailable: 0
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.deploy.podLabel }}
+    spec:
+      containers:
+        - image: "{{ .Values.deploy.image.name }}:{{ .Values.deploy.image.tag }}"
+          name: {{ .Values.containerName }}
+          env:
+            - name: RDS_HOSTNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.configName }}
+                  key: rds-host-name
+            - name: RDS_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.configName }}
+                  key: rds-port
+            - name: RDS_DB_NAME
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.configName }}
+                  key: rds-db-name
+            - name: RDS_USERNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.configName }}
+                  key: rds-user-name
+            - name: KAFKA_HOSTNAME
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.configName }}
+                  key: kafka-hostname
+            - name: KAFKA_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: {{ .Values.configName }}
+                  key: kafka-port
+            - name: RDS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: {{ .Values.secretName }}
+                  key: psqluserpass
+          ports:
+            - containerPort: {{ .Values.deploy.containerPort }}
+          imagePullPolicy: IfNotPresent
