@@ -10,7 +10,7 @@ import ru.ambulance.doctorservice.dao.OutboxEventRepository
 @Service
 class DoctorOutboxProcessor(private val outboxEventRepository: OutboxEventRepository) : OutboxProcessor() {
 
-    override fun getMessage(): Flux<OutboxEvent> = outboxEventRepository.findAll()
+    override fun getMessage(): Flux<OutboxEvent> = outboxEventRepository.findAllWithLock()
 
     override fun deleteById(id: String): Mono<Void> = outboxEventRepository.deleteById(id)
 }

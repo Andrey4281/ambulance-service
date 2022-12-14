@@ -21,6 +21,12 @@ databaseChangeLog:
                     foreignKeyName: fk_doctor_shift_doctor_id
                     references: doctor(id)
               - column:
+                  name: version
+                  type: bigint
+                  defaultValue: 1
+                  constraints:
+                    nullable: false
+              - column:
                   name: is_active
                   type: boolean
                   defaultValue: false

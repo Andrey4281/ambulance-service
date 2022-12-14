@@ -25,7 +25,7 @@ deploy:
   containerPort: 8082
   image:
     name: andrey4281/doctor-service
-    tag: 0.0.2
+    tag: 0.0.3
   service:
     type: ClusterIP
     port:

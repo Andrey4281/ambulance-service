@@ -2,6 +2,7 @@ package ru.ambulance.nurseservice.model.entity
 
 import org.springframework.data.annotation.Id
 import org.springframework.data.annotation.PersistenceConstructor
+import org.springframework.data.annotation.Version
 import org.springframework.data.domain.Persistable
 import org.springframework.data.relational.core.mapping.Column
 import org.springframework.data.relational.core.mapping.Table
@@ -14,6 +15,7 @@ data class NurseShift(
         val nurseId: String,
         var isActive: Boolean = true,
         val date: LocalDateTime,
+        @Version var version: Long?,
         @Column("tzone") val tZone: String,
         var activeInvestigationCount: Int = 0,
         var totalInvestigationCount: Int = 0,
@@ -29,6 +31,7 @@ data class NurseShift(
             isActive: Boolean,
             date: LocalDateTime,
             tZone: String,
+            version: Long?,
             activeInvestigationCount: Int,
             totalInvestigationCount: Int,
             activeTreatmentCount: Int,
@@ -38,6 +41,7 @@ data class NurseShift(
             isActive = isActive,
             date = date,
             tZone = tZone,
+            version = version,
             activeInvestigationCount = activeInvestigationCount,
             totalInvestigationCount = totalInvestigationCount,
             activeTreatmentCount = activeTreatmentCount,

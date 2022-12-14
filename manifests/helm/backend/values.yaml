@@ -25,7 +25,7 @@ deploy:
   containerPort: 8081
   image:
     name: andrey4281/appeal-service
-    tag: 0.0.2
+    tag: 0.0.3
   service:
     type: ClusterIP
     port:

@@ -21,7 +21,9 @@ class NurseShiftServiceImpl(private val nurseShiftRepository: NurseShiftReposito
                 Mono.error(ActiveShiftAlreadyExistsException("Active shift already exists for this nurse"))
             } else {
                 val shift = NurseShift(nurseShiftId = UUID.randomUUID().toString(),
-                        nurseId = nurseId, date = OffsetDateTime.now(ZoneId.of("UTC")).toLocalDateTime(), tZone = tZone)
+                        nurseId = nurseId, date = OffsetDateTime.now(ZoneId.of("UTC")).toLocalDateTime(),
+                        tZone = tZone, activeInvestigationCount = 0, activeTreatmentCount = 0,
+                        totalInvestigationCount = 0, totalTreatmentCount = 0, isActive = true, version = 1)
                 nurseShiftRepository.save(shift)
             }
         }.map { it.nurseShiftId }

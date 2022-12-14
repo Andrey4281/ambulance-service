@@ -25,7 +25,6 @@ class DoctorShiftServiceImpl(private val doctorShiftRepository: DoctorShiftRepos
     private val appealCommandTopic: String = "appealCommandTopic"
 
     //TODO asemenov webflux обработку исключения
-    //TODO asemenov могут быть проблемы если две параллельные транзакции
     @Transactional
     override fun beginShift(doctorId: String, tZone: String): Mono<String> {
         return doctorShiftRepository.isExistActiveDoctorShift(doctorId).flatMap {
@@ -33,7 +32,8 @@ class DoctorShiftServiceImpl(private val doctorShiftRepository: DoctorShiftRepos
                 Mono.error(ActiveShiftAlreadyExistsException("Active shift already exists for this doctor"))
             } else {
                 val shift = DoctorShift(doctorShiftId = UUID.randomUUID().toString(),
-                doctorId = doctorId, date = OffsetDateTime.now(ZoneId.of("UTC")).toLocalDateTime(), tZone = tZone)
+                doctorId = doctorId, date = OffsetDateTime.now(ZoneId.of("UTC")).toLocalDateTime(), tZone = tZone,
+                        activeAppealCount = 0, totalAppealCount = 0, isActive = true, version = 1)
                 doctorShiftRepository.save(shift)
             }
         }.map { it.doctorShiftId }

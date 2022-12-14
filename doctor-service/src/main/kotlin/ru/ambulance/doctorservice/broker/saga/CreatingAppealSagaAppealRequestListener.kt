@@ -43,7 +43,6 @@ class CreatingAppealSagaAppealRequestListener : AbstractDoctorServiceListener<Cr
 
     override fun getTopic(): String = appealRequestTopic
 
-    //TODO asemenov подумать над оптимистик лок для shift - тк инкремент идет
     override fun getSuccessHandler(creatingAppealEvent: CreatingAppealEvent): Mono<OutboxEvent> {
         return doctorService.findRequiredDoctorWithMinActiveAppeal(hospitalId = creatingAppealEvent.hospitalId,
                 specialization = creatingAppealEvent.primaryRequiredDoctor.name).filter(Objects::nonNull).flatMap {
