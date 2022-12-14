@@ -1,4 +1,4 @@
-Установка postgres :
+#Установка postgres :
 Предварительно необходимо добавить helm репу для postgres-sql:
 Выполнить команду helm repo add bitnami https://charts.bitnami.com/bitnami
 a) Сервис appeal
@@ -25,26 +25,38 @@ kubectl --namespace doctor-db port-forward svc/doctor-database-postgresql 5435:5
 Подключение к БД:
 kubectl --namespace nurse-db port-forward svc/nurse-database-postgresql 5436:5432
 
-Установка kafka:
+#Установка kafka:
 (1) Откуда брать чарт
 https://bitnami.com/stack/kafka/helm
 Выполнить команду для установки:
 (2) helm -n kafka install kafka-cluster bitnami/kafka
 
-Подключение к брокеру kafka из внешнего хоста:
+#Подключение к брокеру kafka из внешнего хоста:
 (1) Перед подключением необходимо выполнить команду
 helm -n kafka upgrade kafka-cluster -f kafka-values.yaml bitnami/kafka
 (2) kubectl --namespace kafka port-forward svc/kafka-cluster-headless 9093:9093
 (3) Возврат к прежним конфигам
 helm -n kafka upgrade kafka-cluster -f original-kafka-values.yaml bitnami/kafka
 
-Установка cowl:
+#Установка cowl:
 (1) helm repo add cloudhut https://raw.githubusercontent.com/cloudhut/charts/master/archives
 (2) helm install -f cowl-values.yaml kowl cloudhut/kowl -n kafka
 (3) Подключение к kowl для создания топиков и тд:
 kubectl --namespace kafka port-forward svc/kowl 8080:80
 
-Полезные команды helm:
+#Установка keycloak:
+(1) kubectl apply -f keycloak-namespace.yaml
+(2) kubectl apply -f keycloak-postgres.yaml
+(3) kubectl apply -f keycloak-service.yaml
+
+Для дебага:
+(1) go to url http://$(minikube ip):$(kubectl get services/keycloak -o go-template='{{(index .spec.ports 0).nodePort}}')
+
+Для отката:
+(1) kubectl delete namespace keycloak
+
+
+#Полезные команды helm:
 helm list --all-namespaces
 helm uninstall kafka-cluster --namespace kafka
 helm uninstall kowl --namespace kafka

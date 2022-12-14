@@ -1,0 +1,32 @@
+server:
+  port: 8088
+
+spring:
+  application:
+    name: gateway
+  security:
+    oauth2:
+      client:
+        access-token-uri: http://192.168.49.2:30240/realms/ambulance-service/protocol/openid-connect/token
+        client-id: profile
+        scope: openid
+        user-authorization-uri: http://192.168.49.2:30240/realms/ambulance-service/protocol/openid-connect/auth
+  cloud:
+    gateway:
+      default-filters:
+          - TokenRelay
+      routes:
+          - id: appeal-service
+            uri: http://127.0.0.1:8080/appeal-service
+            predicates:
+              - Path=/appeal/**
+            filters:
+              - StripPrefix=1
+          - id: nurse-service
+            uri: http://127.0.0.1:8080/nurse-service
+            predicates:
+              - Path=/nurse/**
+          - id: doctor-service
+            uri: http://127.0.0.1:8080/doctor-service
+            predicates:
+              - Path=/doctor/**
