@@ -1,0 +1,9 @@
+global:
+  postgresql:
+    auth:
+      username: auth
+      database: auth
+      existingSecret: auth-db-secrets
+      secretKeys:
+        userPasswordKey: psqluserpass
+        adminPasswordKey: psqladminpass

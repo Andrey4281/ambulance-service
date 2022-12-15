@@ -15,6 +15,10 @@ cd ../nurse
 kubectl apply -f nurse-db-namespace.yaml
 kubectl apply -f nurse-db-secret.yaml
 helm -n nurse-db install nurse-database -f nurse-postgresql-values.yaml bitnami/postgresql
+cd ../auth
+kubectl apply -f auth-db-namespace.yaml
+kubectl apply -f auth-db-secret.yaml
+helm -n auth-db install auth-database -f auth-db-values.yaml bitnami/postgresql
 cd ../prometheus
 kubectl apply -f monitoring-namespace.yaml
 helm -n monitoring install stack prometheus-community/kube-prometheus-stack -f stack-values.yaml

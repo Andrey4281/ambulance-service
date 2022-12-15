@@ -1,0 +1,46 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 1
+      author: asemenov
+      changes:
+        - insert:
+            schema: public
+            tableName: role
+            columns:
+              - column:
+                  name: id
+                  value: "181921bc-7c9e-11ed-a1eb-0242ac120002"
+              - column:
+                  name: name
+                  value: "USER"
+        - insert:
+            schema: public
+            tableName: role
+            columns:
+              - column:
+                  name: id
+                  value: "440ee0cc-7c9e-11ed-a1eb-0242ac120002"
+              - column:
+                  name: name
+                  value: "AMBULANCE_STUFF"
+        - insert:
+            schema: public
+            tableName: role
+            columns:
+              - column:
+                  name: id
+                  value: "5ddd2806-7c9e-11ed-a1eb-0242ac120002"
+              - column:
+                  name: name
+                  value: "DOCTOR"
+        - insert:
+            schema: public
+            tableName: role
+            columns:
+              - column:
+                  name: id
+                  value: "808a7e26-7c9e-11ed-a1eb-0242ac120002"
+              - column:
+                  name: name
+                  value: "NURSE"

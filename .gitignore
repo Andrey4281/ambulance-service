@@ -4,3 +4,4 @@
 /doctor-service/target/
 /nurse-service/.mvn/
 /gateway-service/.mvn/
+/auth-service/.mvn/

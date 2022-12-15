@@ -63,3 +63,6 @@ kubectl --namespace kafka port-forward pods/kafka-cluster-0 9092:9092
 
 kubectl --namespace monitoring port-forward svc/prometheus-operated 9090:9090
 
+kubectl --namespace auth-db port-forward svc/auth-database-postgresql 5437:5432
+
+

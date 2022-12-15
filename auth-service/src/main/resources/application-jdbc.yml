@@ -1,0 +1,17 @@
+spring:
+  r2dbc:
+    url: r2dbc:postgresql://${RDS_HOSTNAME:localhost}:${RDS_PORT:5437}/${RDS_DB_NAME:auth}
+    username: ${RDS_USERNAME:auth}
+    password: ${RDS_PASSWORD:auth}
+    initialization-mode: always
+    pool:
+      name: AUTH-SERVICE-POOL
+      maxSize: 10
+      initialSize: 2
+      maxIdleTime: 30m
+      validationQuery: "SELECT 1"
+  liquibase:
+    url: jdbc:postgresql://${RDS_HOSTNAME:localhost}:${RDS_PORT:5437}/${RDS_DB_NAME:auth}
+    user: ${RDS_USERNAME:auth}
+    password: ${RDS_PASSWORD:auth}
+    change-log: classpath:/db/db.changelog.yaml
