@@ -15,6 +15,9 @@ cd ../nurse
 kubectl apply -f nurse-db-namespace.yaml
 kubectl apply -f nurse-db-secret.yaml
 helm -n nurse-db install nurse-database -f nurse-postgresql-values.yaml bitnami/postgresql
+cd ../prometheus
+kubectl apply -f monitoring-namespace.yaml
+helm -n monitoring install stack prometheus-community/kube-prometheus-stack -f stack-values.yaml
 cd ../helm
 helm install appeal-service backend
 helm install -f doctor-values.yaml doctor-service backend
@@ -23,6 +26,3 @@ cd ../gateway
 kubectl apply -f gateway-namespace.yaml
 kubectl apply -f gateway-config.yaml
 kubectl apply -f gateway-deployment.yaml
-cd ../prometheus
-kubectl apply -f monitoring-namespace.yaml
-helm -n monitoring install stack prometheus-community/kube-prometheus-stack -f stack-values.yaml
