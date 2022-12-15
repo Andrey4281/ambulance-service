@@ -16,6 +16,8 @@ deploymentName: "nurse-deployment"
 containerName: "nurse-container"
 configName: "nurse-config"
 secretName: "nurse-app-secrets"
+serviceMonitorName: "nurse-monitor"
+serviceMonitorLabel: "nurse-monitor"
 
 deploy:
   replicasCount: 1
@@ -25,7 +27,7 @@ deploy:
   containerPort: 8083
   image:
     name: andrey4281/nurse-service
-    tag: 0.0.3
+    tag: 0.0.4
   service:
     type: ClusterIP
     port:

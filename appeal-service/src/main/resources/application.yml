@@ -30,6 +30,11 @@ management:
       exposure:
         include: health, prometheus, info, openapi, swaggerui
   metrics:
+    distribution:
+      slo:
+        http.server.requests: 10ms, 50ms, 100ms, 200ms, 300ms, 400ms, 500ms
+      percentiles-histogram:
+        "[http.server.requests]": true
     export:
       prometheus:
         enabled: true

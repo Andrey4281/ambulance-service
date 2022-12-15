@@ -38,6 +38,13 @@ kubectl --namespace doctor-db port-forward svc/doctor-database-postgresql 5435:5
 Подключение к БД:
 kubectl --namespace nurse port-forward svc/nurse-database-postgresql 5436:5432
 
+Установка prometheus:
+В папке manifests/prometheus выполнить команды:
+1) kubectl apply -f monitoring-namespace.yaml
+2) helm -n monitoring install stack prometheus-community/kube-prometheus-stack -f stack-values.yaml
+kubectl -n monitoring port-forward service/prometheus-operated 9090
+kubectl -n monitoring port-forward service/stack-grafana 9000:80
+
 Установка сервиса appeal:
 В папке manifests/helm выполнить команду:
 1) helm install appeal-service backend

@@ -59,5 +59,7 @@ helm -n kafka upgrade kafka-cluster -f kafka-values.yaml bitnami/kafka
 
 helm upgrade -f cowl-values.yaml kowl cloudhut/kowl -n kafka
 
-
 kubectl --namespace kafka port-forward pods/kafka-cluster-0 9092:9092
+
+kubectl --namespace monitoring port-forward svc/prometheus-operated 9090:9090
+

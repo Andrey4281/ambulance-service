@@ -9,3 +9,27 @@ services:
   appealService: ${APPEAL_SERVICE_URL:http://localhost:8081}
   doctorService: ${DOCTOR_SERVICE_URL:http://localhost:8082}
   nurseService: ${NURSE_SERVICE_URL:http://localhost:8083}
+
+# actuator settings
+management:
+  health:
+    default:
+      enabled: true
+    db:
+      enabled: true
+  endpoint:
+    health:
+      showDetails: always
+  endpoints:
+    web:
+      exposure:
+        include: health, prometheus, info, openapi, swaggerui
+  metrics:
+    distribution:
+      slo:
+        http.server.requests: 10ms, 50ms, 100ms, 200ms, 300ms, 400ms, 500ms
+      percentiles-histogram:
+        "[http.server.requests]": true
+    export:
+      prometheus:
+        enabled: true

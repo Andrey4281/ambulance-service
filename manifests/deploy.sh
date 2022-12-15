@@ -23,3 +23,6 @@ cd ../gateway
 kubectl apply -f gateway-namespace.yaml
 kubectl apply -f gateway-config.yaml
 kubectl apply -f gateway-deployment.yaml
+cd ../prometheus
+kubectl apply -f monitoring-namespace.yaml
+helm -n monitoring install stack prometheus-community/kube-prometheus-stack -f stack-values.yaml

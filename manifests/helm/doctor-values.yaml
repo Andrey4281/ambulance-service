@@ -16,6 +16,8 @@ deploymentName: "doctor-deployment"
 containerName: "doctor-container"
 configName: "doctor-config"
 secretName: "doctor-app-secrets"
+serviceMonitorName: "doctor-monitor"
+serviceMonitorLabel: "doctor-monitor"
 
 deploy:
   replicasCount: 1
@@ -25,7 +27,7 @@ deploy:
   containerPort: 8082
   image:
     name: andrey4281/doctor-service
-    tag: 0.0.3
+    tag: 0.0.4
   service:
     type: ClusterIP
     port:
