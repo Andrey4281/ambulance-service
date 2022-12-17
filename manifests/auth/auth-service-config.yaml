@@ -1,0 +1,10 @@
+apiVersion: v1
+data:
+  rds-host-name: "auth-database-postgresql.auth-db.svc.cluster.local"
+  rds-port: "5432"
+  rds-db-name: "auth"
+  rds-user-name: "auth"
+kind: ConfigMap
+metadata:
+  name: auth-config
+  namespace: auth

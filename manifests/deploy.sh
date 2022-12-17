@@ -30,3 +30,9 @@ cd ../gateway
 kubectl apply -f gateway-namespace.yaml
 kubectl apply -f gateway-config.yaml
 kubectl apply -f gateway-deployment.yaml
+cd ../auth
+kubectl apply -f auth-namespace.yaml
+kubectl apply -f auth-service-config.yaml
+kubectl apply -f auth-service-secret.yaml
+kubectl apply -f auth-service-deployment.yaml
+
